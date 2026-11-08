@@ -22,9 +22,7 @@ module tt_um_example (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-    // OP CODES
-    
-    localparam [3:0]
+    localparam [3:0]     // OP CODES
         NOP    = 4'h0,
         OP_MOV = 4'h1,
         OP_LD  = 4'h2,
@@ -45,14 +43,18 @@ module tt_um_example (
         OP_JNZ = 4'hE,
         OP_KIL = 4'hF;
 
-    localparam [2:0]
+    localparam [2:0]    // STATES
         RETR_UPR = 3'd0,
         RETR_LWR = 3'd1,
-        WAIT_UPR = 3'd2,
+        RETR_MRY = 3'd2,
+
+        WAIT_UPR = 3'd3,
         WAIT_LWR = 3'd4,
-        EXECUTE  = 3'd5,
-        KILL     = 3'd6,
-        
+        WAIT_MRY = 3'd5
+
+        EXECUTE  = 3'd6,
+        KILL     = 3'd7,
+        ENABLE   = 3'd8;
 
 
     // STATUS FLAGS: 
@@ -64,7 +66,12 @@ module tt_um_example (
 
     reg[7:0] regfile[0:63];
 
-    reg[15:0] ir;
+    reg[2:0] state; reg[2:0] next_state;
+
+    reg[3:0] op;
+    reg[3:0] regdest;
+    reg[3:0] opt1;
+    reg[3:0] opt2;
 
     always @(*) begin
         
@@ -73,11 +80,27 @@ module tt_um_example (
     reg[3:0] opcode = 
 
     always @(posedge clk) begin
+        state = next_state;
 
+        case (state)
+            WAIT_LWR: next_state = RETR_LWR;
+            WAIT_UPR: next_state = RETR_UPR;
+            RETR_UPR: begin
+                op = ui_in[7:4];
+                regdest = ui_in[3:0];
+                next_state = WAIT_LWR;
+            end
+            RETR_LWR: begin
+                opt1 = ui_in[7:4];
+                opt2 = ui_in[3:0];
+                next_state = WAIT_LWR;
+            end
+        endcase
     end
 
     always @(*) begin
-        case 
+        case (state)
+
     end
 
 
