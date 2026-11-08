@@ -43,8 +43,42 @@ module tt_um_example (
         OP_JMP = 4'hC,
         OP_JZ  = 4'hD,
         OP_JNZ = 4'hE,
-        OP_HLT = 4'hF;
+        OP_KIL = 4'hF;
 
-    
+    localparam [2:0]
+        RETR_UPR = 3'd0,
+        RETR_LWR = 3'd1,
+        WAIT_UPR = 3'd2,
+        WAIT_LWR = 3'd4,
+        EXECUTE  = 3'd5,
+        KILL     = 3'd6,
+        
+
+
+    // STATUS FLAGS: 
+    // ZERO     0
+    // NEGATIVE 1
+    // CARRY    2
+    // OVERFLOW 3
+    reg[3:0] STATUS_FLAGS;
+
+    reg[7:0] regfile[0:63];
+
+    reg[15:0] ir;
+
+    always @(*) begin
+        
+    end
+
+    reg[3:0] opcode = 
+
+    always @(posedge clk) begin
+
+    end
+
+    always @(*) begin
+        case 
+    end
+
 
 endmodule
