@@ -23,7 +23,7 @@ module DFPuter (
     input  wire       rst_n     // reset_n - low to reset
 );
     `include "defines.vh"
-    
+
     wire retr_mry = ui_in[7];
 
     // STATUS FLAGS: 
@@ -31,18 +31,39 @@ module DFPuter (
     // NEGATIVE 1
     // CARRY    2
     // OVERFLOW 3
-    reg[3:0] STATUS_FLAGS;
+    reg[3:0] sflags;
 
-    reg[7:0] regfile[0:63];
+    reg[7:0] regfile[0:15];
     reg[7:0] memory[0:511]; // 256 instructions
 
     reg[2:0] state; reg[2:0] next_state;
     reg [11:0] pc; reg[11:0] pc_next;
 
+    reg[3:0] nextop;
     reg[3:0] op;
+
     reg[3:0] regdest;
+    reg[3:0] nexdest;
+
     reg[3:0] opt1;
     reg[3:0] opt2;
+
+    reg[15:0] cu_datout;
+    reg wdata;    
+
+    ControlUnit exec (
+        .opcode(op),
+        .opt1(opt1),
+        .opt2(opt2),
+
+        .clk(clk),
+        
+        .state(state),
+        .sflags(sflags),
+        
+        .reg_write(wdata),
+        .datout(cu_datout)
+    );
 
     // State Management
     always @(posedge clk) begin
@@ -58,13 +79,13 @@ module DFPuter (
     always @(posedge clk) begin
         next_state = state;
         pc_next = pc;
-
+        wdata = 1'b0;
         case (state)
             WAIT_LWR: next_state = RETR_LWR;
             WAIT_UPR: next_state = RETR_UPR;
             RETR_UPR: begin
-                op <= ui_in[7:4];
-                regdest <= uio_in[3:0];
+                nextop <= ui_in[7:4];
+                nexdest <= uio_in[3:0];
                 next_state <= EXECUTE;
             end
             RETR_LWR: begin
@@ -73,7 +94,14 @@ module DFPuter (
                 next_state = WAIT_LWR;
             end
             EXECUTE: begin
+                regdest <= nexdest;
+                op <= nextop;
 
+                if (!rst_n) begin
+                    regfile[0] <= 16'h0;
+                end else if (wdata) begin
+                    regfile[regdest] <= cu_datout;
+                end
             end
 
         endcase
