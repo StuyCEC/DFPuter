@@ -11,7 +11,8 @@
 
 `default_nettype none
 
-module tt_um_example (
+module DFPuter (
+
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -21,40 +22,8 @@ module tt_um_example (
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );
-
-    localparam [3:0]     // OP CODES
-        NOP    = 4'h0,
-        OP_MOV = 4'h1,
-        OP_LD  = 4'h2,
-        OP_ST  = 4'h3,
-        OP_LDI = 4'h4,
-
-        OP_ADD = 4'h5,
-        OP_SUB = 4'h6,
-        
-        OP_OR  = 4'h7,
-        OP_AND = 4'h8,
-        OP_NOT = 4'h9,
-        OP_SHL = 4'hA,
-        OP_SHR = 4'hB,
-
-        OP_JMP = 4'hC,
-        OP_JZ  = 4'hD,
-        OP_JNZ = 4'hE,
-        OP_KIL = 4'hF;
-
-    localparam [2:0]    // STATES
-        RETR_UPR = 3'd0,
-        RETR_LWR = 3'd1,
-        RETR_MRY = 3'd2,
-
-        WAIT_UPR = 3'd3,
-        WAIT_LWR = 3'd4,
-        WAIT_MRY = 3'd5,
-
-        EXECUTE  = 3'd6,
-        KILL     = 3'd7;
-
+    `include "defines.vh"
+    
     wire retr_mry = ui_in[7];
 
     // STATUS FLAGS: 
@@ -104,7 +73,7 @@ module tt_um_example (
                 next_state = WAIT_LWR;
             end
             EXECUTE: begin
-                
+
             end
 
         endcase
