@@ -50,12 +50,12 @@ module tt_um_example (
 
         WAIT_UPR = 3'd3,
         WAIT_LWR = 3'd4,
-        WAIT_MRY = 3'd5
+        WAIT_MRY = 3'd5,
 
         EXECUTE  = 3'd6,
-        KILL     = 3'd7,
-        ENABLE   = 3'd8;
+        KILL     = 3'd7;
 
+    wire retr_mry = ui_in[7];
 
     // STATUS FLAGS: 
     // ZERO     0
@@ -65,42 +65,49 @@ module tt_um_example (
     reg[3:0] STATUS_FLAGS;
 
     reg[7:0] regfile[0:63];
+    reg[7:0] memory[0:511]; // 256 instructions
 
     reg[2:0] state; reg[2:0] next_state;
+    reg [11:0] pc; reg[11:0] pc_next;
 
     reg[3:0] op;
     reg[3:0] regdest;
     reg[3:0] opt1;
     reg[3:0] opt2;
 
-    always @(*) begin
-        
+    // State Management
+    always @(posedge clk) begin
+        if (!rst_n) begin
+            state <= RETR_UPR;
+        end else begin
+            state <= next_state;
+            pc <= pc_next;
+        end
     end
 
-    reg[3:0] opcode = 
-
+    // Command Reading
     always @(posedge clk) begin
-        state = next_state;
+        next_state = state;
+        pc_next = pc;
 
         case (state)
             WAIT_LWR: next_state = RETR_LWR;
             WAIT_UPR: next_state = RETR_UPR;
             RETR_UPR: begin
-                op = ui_in[7:4];
-                regdest = ui_in[3:0];
-                next_state = WAIT_LWR;
+                op <= ui_in[7:4];
+                regdest <= uio_in[3:0];
+                next_state <= EXECUTE;
             end
             RETR_LWR: begin
-                opt1 = ui_in[7:4];
-                opt2 = ui_in[3:0];
+                opt1 <= uio_in[7:4];
+                opt2 <= uio_in[3:0];
                 next_state = WAIT_LWR;
             end
+            EXECUTE: begin
+                
+            end
+
         endcase
-    end
-
-    always @(*) begin
-        case (state)
-
     end
 
 
