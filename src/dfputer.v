@@ -34,7 +34,7 @@ module DFPuter (
     reg[3:0] sflags;
 
     reg[7:0] regfile[0:15];
-    reg[7:0] memory[0:511]; // 256 instructions
+    reg[7:0] memory[0:255]; // 256 instructions
 
     reg[2:0] state; reg[2:0] next_state;
     reg [11:0] pc; reg[11:0] pc_next;
@@ -56,7 +56,11 @@ module DFPuter (
         .opcode(op),
         .opt1(opt1),
         .opt2(opt2),
-
+        .reg_val1(regfile[opt1]),
+        .reg_val2(regfile[opt2]),
+        
+        
+        
         .clk(clk),
         
         .state(state),
