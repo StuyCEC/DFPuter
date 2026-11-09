@@ -49,7 +49,8 @@ module DFPuter (
     reg[3:0] opt2;
 
     reg[15:0] cu_datout;
-    reg wdata;    
+    reg reg_wdata;
+    reg mem_wdata;
 
     ControlUnit exec (
         .opcode(op),
@@ -61,7 +62,8 @@ module DFPuter (
         .state(state),
         .sflags(sflags),
         
-        .reg_write(wdata),
+        .mem_write(mem_wdata),
+        .reg_write(reg_wdata),
         .datout(cu_datout)
     );
 

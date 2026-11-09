@@ -1,3 +1,4 @@
+// OP CODES
 `define NOP    4'h0,
 `define OP_MOV 4'h1,
 `define OP_LD  4'h2,
@@ -18,6 +19,7 @@
 `define OP_JNZ 4'hE,
 `define OP_KIL 4'hF;
 
+// STATES
 `define RETR_UPR 3'd0,
 `define RETR_LWR 3'd1,
 `define RETR_MRY 3'd2,
