@@ -20,14 +20,9 @@
   "LEFT_MARGIN_MULT": 6,
   "RIGHT_MARGIN_MULT": 6,
   "GRT_ALLOW_CONGESTION": 1,
-  "FP_IO_HLENGTH": 2,
-  "FP_IO_VLENGTH": 2,
 
   "VDD_NETS": ["VDD"],
   "GND_NETS": ["VSS"],
-  "FP_PDN_MULTILAYER": 0,
-  "FP_PDN_VPITCH": 50.0,
-  "FP_PDN_HPITCH": 50.0,
   "FP_MACRO_HORIZONTAL_HALO": 10,
   "FP_MACRO_VERTICAL_HALO": 10,
 
@@ -38,7 +33,7 @@
   "STA_MACRO_PRIORITIZE_NL": false,
   "PDN_CONNECT_MACROS_TO_GRID": true,
   "PDN_MACRO_CONNECTIONS": [
-    "cpu\\.memory VDD VSS VDD VSS"
+    "memory VDD VSS VDD VSS"
   ],
 
   "MACROS": {
@@ -67,7 +62,7 @@
         ]
       },
       "instances": {
-        "cpu.memory": {
+        "memory": {
           "location": [25, 25],
           "orientation": "N"
         }
