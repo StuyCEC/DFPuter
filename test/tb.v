@@ -23,17 +23,16 @@ module tb ();
   wire [7:0] uio_out;
   wire [7:0] uio_oe;
 `ifdef GL_TEST
-  wire VPWR = 1'b1;
-  wire VGND = 1'b0;
+  wire VDD = 1'b1;
+  wire VSS = 1'b0;
 `endif
 
-  // Replace tt_um_example with your module name:
-  tt_um_example user_project (
+  tt_um_dfputer user_project (
 
-      // Include power ports for the Gate Level test:
+      // Include GF180MCU power ports for the Gate Level test:
 `ifdef GL_TEST
-      .VPWR(VPWR),
-      .VGND(VGND),
+      .VDD(VDD),
+      .VSS(VSS),
 `endif
 
       .ui_in  (ui_in),    // Dedicated inputs
