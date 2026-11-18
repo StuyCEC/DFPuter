@@ -17,14 +17,14 @@
 
   "TOP_MARGIN_MULT": 1,
   "BOTTOM_MARGIN_MULT": 1,
-  "LEFT_MARGIN_MULT": 6,
-  "RIGHT_MARGIN_MULT": 6,
+  "LEFT_MARGIN_MULT": 2,
+  "RIGHT_MARGIN_MULT": 2,
   "GRT_ALLOW_CONGESTION": 1,
 
   "VDD_NETS": ["VDD"],
   "GND_NETS": ["VSS"],
-  "FP_MACRO_HORIZONTAL_HALO": 10,
-  "FP_MACRO_VERTICAL_HALO": 10,
+  "FP_MACRO_HORIZONTAL_HALO": 15,
+  "FP_MACRO_VERTICAL_HALO": 15,
 
   "VERILOG_INCLUDE_DIRS": [
     "dir::."
@@ -32,6 +32,7 @@
   "VERILOG_POWER_DEFINE": "USE_POWER_PINS",
   "STA_MACRO_PRIORITIZE_NL": false,
   "PDN_CONNECT_MACROS_TO_GRID": true,
+  "PDN_ENABLE_MACROS_GRID": true,
   "PDN_MACRO_CONNECTIONS": [
     "memory VDD VSS VDD VSS"
   ],
@@ -63,7 +64,7 @@
       },
       "instances": {
         "memory": {
-          "location": [25, 25],
+          "location": [30, 30],
           "orientation": "N"
         }
       }
