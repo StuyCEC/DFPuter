@@ -64,8 +64,8 @@
       },
       "instances": {
         "memory": {
-          "location": [0, 0],
-          "orientation": "E"
+          "location": [30, 45],
+          "orientation": "N"
         }
       }
     }
