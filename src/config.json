@@ -15,10 +15,6 @@
   "MAGIC_DEF_LABELS": 0,
   "MAGIC_WRITE_LEF_PINONLY": 1,
 
-  "TOP_MARGIN_MULT": 1,
-  "BOTTOM_MARGIN_MULT": 1,
-  "LEFT_MARGIN_MULT": 2,
-  "RIGHT_MARGIN_MULT": 2,
   "GRT_ALLOW_CONGESTION": 1,
 
   "VDD_NETS": ["VDD"],
@@ -36,6 +32,7 @@
   "PDN_MACRO_CONNECTIONS": [
     "memory VDD VSS VDD VSS"
   ],
+  "PDN_CFG": "dir::pdn_cfg.tcl",
 
   "MACROS": {
     "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
@@ -64,7 +61,7 @@
       },
       "instances": {
         "memory": {
-          "location": [30, 45],
+          "location": [60, 45],
           "orientation": "N"
         }
       }
