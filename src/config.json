@@ -1,3 +1,4 @@
+
 {
   "CLOCK_PORT": "clk",
   "CLOCK_PERIOD": 100,
@@ -24,6 +25,7 @@
 
   "VDD_NETS": ["VDD"],
   "GND_NETS": ["VSS"],
+
   "FP_MACRO_HORIZONTAL_HALO": 20,
   "FP_MACRO_VERTICAL_HALO": 20,
 
@@ -32,12 +34,13 @@
   ],
   "VERILOG_POWER_DEFINE": "USE_POWER_PINS",
   "STA_MACRO_PRIORITIZE_NL": false,
-  "PDN_CONNECT_MACROS_TO_GRID": true,
-  "PDN_ENABLE_MACROS_GRID": true,
-  "PDN_MACRO_CONNECTIONS": [
+
+  "FP_PDN_ENABLE_MACROS_GRID": true,
+  "FP_PDN_ENABLE_GLOBAL_CONNECTIONS": true,
+  "FP_PDN_MACRO_HOOKS": [
     "memory VDD VSS VDD VSS"
   ],
-  "PDN_CFG": "dir::pdn_cfg.tcl",
+  "FP_PDN_CFG": "dir::pdn_cfg.tcl",
 
   "MACROS": {
     "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
