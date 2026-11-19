@@ -1,6 +1,3 @@
-source $::env(SCRIPTS_DIR)/openroad/common/io.tcl
-read_current_odb
-
 # 1. Connect global VDD/VSS nets to standard cells and the SRAM macro
 add_global_connection -net $::env(VDD_NET) -inst_pattern {.*} -pin_pattern {^VDD$} -power
 add_global_connection -net $::env(GND_NET) -inst_pattern {.*} -pin_pattern {^VSS$} -ground
@@ -24,4 +21,3 @@ add_pdn_connect -grid sram_grid -layers {Metal3 Metal4}
 add_pdn_connect -grid sram_grid -layers {Metal4 Metal5}
 
 pdngen
-write_views
