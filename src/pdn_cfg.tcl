@@ -1,4 +1,3 @@
-
 add_global_connection \
     -net $::env(VDD_NET) \
     -inst_pattern {.*} \
@@ -13,12 +12,10 @@ add_global_connection \
 
 global_connect
 
-
 set_voltage_domain \
     -name CORE \
     -power $::env(VDD_NET) \
     -ground $::env(GND_NET)
-
 
 define_pdn_grid \
     -name core_grid \
@@ -55,7 +52,6 @@ add_pdn_connect \
     -grid core_grid \
     -layers {Metal4 Metal5}
 
-
 define_pdn_grid \
     -macro \
     -name sram_grid \
@@ -73,11 +69,7 @@ add_pdn_stripe \
 
 add_pdn_connect \
     -grid sram_grid \
-    -layers {Metal1 Metal4}
-
-add_pdn_connect \
-    -grid sram_grid \
-    -layers {Metal3 Metal4}
+    -layers {Metal2 Metal4}
 
 add_pdn_connect \
     -grid sram_grid \
