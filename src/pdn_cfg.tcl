@@ -69,8 +69,10 @@ add_pdn_stripe \
 
 add_pdn_connect \
     -grid sram_grid \
-    -layers {Metal2 Metal4}
+    -layers {Metal3 Metal4}
 
 add_pdn_connect \
     -grid sram_grid \
     -layers {Metal4 Metal5}
+
+pdngen
