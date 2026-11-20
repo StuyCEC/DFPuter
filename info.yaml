@@ -3,7 +3,7 @@ project:
   title:        "DFPuter"      # Project title
   author:       "Asad Patwekar"      # Your name
   discord:      "asadpetwalker"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  "8-bit CPU with unified 256x8 GF180MCU SRAM"      # One line description of what your project does
+  description:  "c pu"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     10000000       # Clock frequency in Hz (or 0 if not applicable)
 

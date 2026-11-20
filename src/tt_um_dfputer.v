@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2024 Asad Patwekar
- * SPDX-License-Identifier: Apache-2.0
+- Copyright (c) 2024 Asad Patwekar
+- SPDX-License-Identifier: Apache-2.0
  */
 
- /*
- * asadpetwalker
- * StuyCEC
- * Dufocklian Puter
+/*
+- asadpetwalker
+- StuyCEC
+- Dufocklian Puter
  */
 
 `default_nettype none
@@ -30,6 +30,7 @@ reg [3:0] curr_sflags;
 wire [3:0] sflags;
 
 reg [7:0] regfile [0:15];
+reg [7:0] mem [0:255];
 
 reg [2:0] state;
 reg [7:0] pc;
@@ -57,7 +58,7 @@ reg ram_gwen;
 reg [7:0] ram_wen;
 reg [7:0] ram_addr;
 reg [7:0] ram_din;
-wire [7:0] ram_dout;
+reg [7:0] ram_dout;
 
 reg next_ram_cen;
 reg next_ram_gwen;
@@ -71,15 +72,17 @@ assign uo_out = gpio_out;
 assign uio_out = gpio_uio_out;
 assign uio_oe = retr_mry ? 8'h00 : gpio_uio_oe;
 
-gf180mcu_ocd_ip_sram__sram256x8m8wm1 memory (
-    .CLK(clk),
-    .CEN(ram_cen),
-    .GWEN(ram_gwen),
-    .WEN(ram_wen),
-    .A(ram_addr),
-    .D(ram_din),
-    .Q(ram_dout)
-);
+always @(posedge clk) begin
+    if (!ram_cen) begin
+        if (!ram_gwen) begin
+            for (i = 0; i < 8; i = i + 1) begin
+                if (!ram_wen[i])
+                    mem[ram_addr][i] <= ram_din[i];
+            end
+        end
+        ram_dout <= mem[ram_addr];
+    end
+end
 
 ControlUnit exec (
     .opcode(op),

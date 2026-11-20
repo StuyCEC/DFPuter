@@ -2,11 +2,7 @@
   "CLOCK_PORT": "clk",
   "CLOCK_PERIOD": 100,
 
-  "FP_SIZING": "absolute",
-  "DIE_AREA": [0, 0, 711.2, 325.36],
-  "CORE_AREA": [12.32, 15.68, 698.88, 309.68],
-
-  "PL_TARGET_DENSITY_PCT": 55,
+  "PL_TARGET_DENSITY_PCT": 60,
   "PL_RESIZER_HOLD_SLACK_MARGIN": 0.1,
   "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.05,
 
@@ -18,62 +14,8 @@
   "RUN_CTS": 1,
   "MAGIC_DEF_LABELS": 0,
   "MAGIC_WRITE_LEF_PINONLY": 1,
-  "MAGIC_MACRO_STD_CELL_SOURCE": "macro",
-  "MAGIC_GDS_ALLOW_ABSTRACT": [
-    "gf180mcu_ocd_ip_sram__sram256x8m8wm1"
-  ],
-  "PRIMARY_GDSII_STREAMOUT_TOOL": "klayout",
-
-  "GRT_ALLOW_CONGESTION": 1,
-  "GRT_LAYER_ADJUSTMENTS": [0, 0, 0, 0.25, 0],
-
-  "VDD_NETS": ["VDD"],
-  "GND_NETS": ["VSS"],
-  "FP_MACRO_HORIZONTAL_HALO": 20,
-  "FP_MACRO_VERTICAL_HALO": 20,
 
   "VERILOG_INCLUDE_DIRS": [
     "dir::."
-  ],
-  "VERILOG_POWER_DEFINE": "USE_POWER_PINS",
-  "STA_MACRO_PRIORITIZE_NL": false,
-  "PDN_CONNECT_MACROS_TO_GRID": true,
-  "PDN_MACRO_CONNECTIONS": [
-    "memory VDD VSS VDD VSS"
-  ],
-  "PDN_CFG": "dir::pdn_cfg.tcl",
-
-  "MACROS": {
-    "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
-      "gds": [
-        "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1.gds"
-      ],
-      "lef": [
-        "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1.lef"
-      ],
-      "vh": [
-        "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1.blackbox.v"
-      ],
-      "spice": [
-        "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1.spice"
-      ],
-      "lib": {
-        "*_tt_025C_3v30": [
-          "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__tt_025C_3v30.lib"
-        ],
-        "*_ss_125C_3v00": [
-          "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__ss_125C_3v00.lib"
-        ],
-        "*_ff_n40C_3v60": [
-          "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__ff_n40C_3v60.lib"
-        ]
-      },
-      "instances": {
-        "memory": {
-          "location": [60, 50],
-          "orientation": "N"
-        }
-      }
-    }
-  }
+  ]
 }
