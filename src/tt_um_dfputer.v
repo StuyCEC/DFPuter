@@ -72,13 +72,11 @@ assign uo_out = gpio_out;
 assign uio_out = gpio_uio_out;
 assign uio_oe = retr_mry ? 8'h00 : gpio_uio_oe;
 
+// Synchronous 256x8 RAM (no shared loop variable)
 always @(posedge clk) begin
     if (!ram_cen) begin
         if (!ram_gwen) begin
-            for (i = 0; i < 8; i = i + 1) begin
-                if (!ram_wen[i])
-                    mem[ram_addr][i] <= ram_din[i];
-            end
+            mem[ram_addr] <= (mem[ram_addr] & ram_wen) | (ram_din & ~ram_wen);
         end
         ram_dout <= mem[ram_addr];
     end
