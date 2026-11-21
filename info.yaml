@@ -40,7 +40,7 @@ pinout:
   uio[2]: "Data In"
   uio[3]: "Data In"
   uio[4]: "Data In"
-  uo[5]:  "Data In"
+  uio[5]:  "Data In"
   uio[6]: "Data In"
   uio[7]: "Data In"
 
