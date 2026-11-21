@@ -1,14 +1,12 @@
-yaml_version: 6
-
 project:
   title:        "Dufocklian Puter"
   author:       "Asad Patwekar"
   discord:      ""
-  description:  "c pu"
+  description:  "8-bit CPU"
   language:     "Verilog"
-  clock_hz:     10000000    
+  clock_hz:     1000000
 
-  tiles:        "2x2"
+  tiles:        "4x4"
 
   top_module:   "tt_um_dfputer"
 
@@ -40,7 +38,7 @@ pinout:
   uio[2]: "Data In"
   uio[3]: "Data In"
   uio[4]: "Data In"
-  uio[5]:  "Data In"
+  uio[5]: "Data In"
   uio[6]: "Data In"
   uio[7]: "Data In"
 
