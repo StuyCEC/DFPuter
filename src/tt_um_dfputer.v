@@ -4,9 +4,9 @@
  */
 
 /*
-- asadpetwalker
-- StuyCEC
-- Dufocklian Puter
+asadpetwalker
+StuyCEC
+Dufocklian Puter
  */
 
 `default_nettype none
@@ -72,7 +72,6 @@ assign uo_out = gpio_out;
 assign uio_out = gpio_uio_out;
 assign uio_oe = retr_mry ? 8'h00 : gpio_uio_oe;
 
-// Synchronous 256x8 RAM (no shared loop variable)
 always @(posedge clk) begin
     if (!ram_cen) begin
         if (!ram_gwen) begin
