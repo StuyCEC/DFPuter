@@ -10,9 +10,10 @@ project:
 
   top_module:   "tt_um_dfputer"
 
-  source_files:
-    - "tt_um_dfputer.v"
-    - "dfcu.v"
+source_files:
+  - "tt_um_dfputer.v"
+  - "dfcu.v"
+  - "defines.vh"
 
 pinout:
   ui[0]: "Program Address[0]"

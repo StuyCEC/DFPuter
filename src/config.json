@@ -26,13 +26,16 @@
       },
       "instances": {
         "sram_inst": {
-          "location": [40, 40],
+          "location": [
+            40,
+            40
+          ],
           "orientation": "N"
         }
       }
     }
   },
-  "PDN_MACRO_CONNECTIONS": [
+  "FP_PDN_MACRO_HOOKS": [
     "sram_inst VPWR VGND VPWR VGND"
   ]
 }
