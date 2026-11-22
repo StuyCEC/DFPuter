@@ -2,7 +2,7 @@ project:
   title:        "Dufocklian Puter"
   author:       "Asad Patwekar"
   discord:      ""
-  description:  "8-bit CPU"
+  description:  "c pu"
   language:     "Verilog"
   clock_hz:     1000000
 

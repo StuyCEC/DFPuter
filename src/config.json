@@ -33,6 +33,6 @@
     }
   },
   "PDN_MACRO_CONNECTIONS": [
-    "sram_inst VPWR VGND VDD VSS"
+    "sram_inst VPWR VGND VPWR VGND"
   ]
 }
