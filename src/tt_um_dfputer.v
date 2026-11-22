@@ -30,7 +30,6 @@ reg [3:0] curr_sflags;
 wire [3:0] sflags;
 
 reg [7:0] regfile [0:15];
-reg [7:0] mem [0:255];
 
 reg [2:0] state;
 reg [7:0] pc;
@@ -58,7 +57,7 @@ reg ram_gwen;
 reg [7:0] ram_wen;
 reg [7:0] ram_addr;
 reg [7:0] ram_din;
-reg [7:0] ram_dout;
+wire [7:0] ram_dout;
 
 reg next_ram_cen;
 reg next_ram_gwen;
@@ -72,14 +71,19 @@ assign uo_out = gpio_out;
 assign uio_out = gpio_uio_out;
 assign uio_oe = retr_mry ? 8'h00 : gpio_uio_oe;
 
-always @(posedge clk) begin
-    if (!ram_cen) begin
-        if (!ram_gwen) begin
-            mem[ram_addr] <= (mem[ram_addr] & ram_wen) | (ram_din & ~ram_wen);
-        end
-        ram_dout <= mem[ram_addr];
-    end
-end
+gf180mcu_ocd_ip_sram__sram256x8m8wm1 sram_inst (
+`ifdef USE_POWER_PINS
+    .VDD  (VPWR),
+    .VSS  (VGND),
+`endif
+    .CLK  (clk),
+    .CEN  (ram_cen),
+    .GWEN (ram_gwen),
+    .WEN  (ram_wen),
+    .A    (ram_addr),
+    .D    (ram_din),
+    .Q    (ram_dout)
+    );
 
 ControlUnit exec (
     .opcode(op),

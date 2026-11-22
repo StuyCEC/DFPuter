@@ -26,6 +26,7 @@ COMPILE_ARGS    += -DUNIT_DELAY=\#1
 
 # this gets copied in by the GDS action workflow
 VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
+VERILOG_SOURCES += $(PWD)/../src/sram/macros/gf180mcu_ocd_ip_sram__sram256x8m8wm1/verilog/gf180mcu_ocd_ip_sram__sram256x8m8wm1.v
 
 endif
 
