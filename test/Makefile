@@ -8,6 +8,9 @@ TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
 PROJECT_SOURCES = tt_um_dfputer.v dfcu.v defines.vh
 
+# ALWAYS include the SRAM behavioral model for both RTL and Gate-Level sims:
+VERILOG_SOURCES += $(PWD)/../src/sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1.v
+
 ifneq ($(GATES),yes)
 
 # RTL simulation:
@@ -26,7 +29,6 @@ COMPILE_ARGS    += -DUNIT_DELAY=\#1
 
 # this gets copied in by the GDS action workflow
 VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
-VERILOG_SOURCES += $(PWD)/../src/sram/macros/gf180mcu_ocd_ip_sram__sram256x8m8wm1/verilog/gf180mcu_ocd_ip_sram__sram256x8m8wm1.v
 
 endif
 
