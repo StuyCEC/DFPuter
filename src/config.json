@@ -1,4 +1,5 @@
 {
+  "PDN_CFG": "dir::pdn_cfg.tcl",
   "PL_TARGET_DENSITY_PCT": 55,
   "PL_ROUTABILITY_DRIVEN": true,
   "PDN_MULTILAYER": true,
