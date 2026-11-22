@@ -72,10 +72,6 @@ assign uio_out = gpio_uio_out;
 assign uio_oe = retr_mry ? 8'h00 : gpio_uio_oe;
 
 gf180mcu_ocd_ip_sram__sram256x8m8wm1 sram_inst (
-`ifdef USE_POWER_PINS
-    .VDD  (VPWR),
-    .VSS  (VGND),
-`endif
     .CLK  (clk),
     .CEN  (ram_cen),
     .GWEN (ram_gwen),
@@ -83,7 +79,7 @@ gf180mcu_ocd_ip_sram__sram256x8m8wm1 sram_inst (
     .A    (ram_addr),
     .D    (ram_din),
     .Q    (ram_dout)
-    );
+);
 
 ControlUnit exec (
     .opcode(op),
