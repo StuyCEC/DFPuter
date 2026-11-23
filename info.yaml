@@ -1,3 +1,5 @@
+yaml_version: "4"
+
 project:
   title:        "Dufocklian Puter"
   author:       "Asad Patwekar"
@@ -5,61 +7,40 @@ project:
   description:  "8-bit CPU"
   language:     "Verilog"
   clock_hz:     1000000
-
   tiles:        "2x2"
-
   top_module:   "tt_um_dfputer"
-
   source_files:
     - "tt_um_dfputer.v"
     - "dfcu.v"
     - "defines.vh"
 
 pinout:
-  ui_in[0]: "Instruction [3] / Data"
-  ui_in[1]: "Instruction [2] / Data"
-  ui_in[2]: "Instruction [1] / Data"
-  ui_in[3]: "Instruction [0] / Data"
-  ui_in[4]: "Opcode [3]"
-  ui_in[5]: "Opcode [2]"
-  ui_in[6]: "Opcode [1]"
-  ui_in[7]: "Opcode [0]"
+  ui[0]: "Instruction [3] / Data"
+  ui[1]: "Instruction [2] / Data"
+  ui[2]: "Instruction [1] / Data"
+  ui[3]: "Instruction [0] / Data"
+  ui[4]: "Opcode [3]"
+  ui[5]: "Opcode [2]"
+  ui[6]: "Opcode [1]"
+  ui[7]: "Opcode [0]"
 
-  uo_out[0]: "GPIO Out [0]"
-  uo_out[1]: "GPIO Out [1]"
-  uo_out[2]: "GPIO Out [2]"
-  uo_out[3]: "GPIO Out [3]"
-  uo_out[4]: "GPIO Out [4]"
-  uo_out[5]: "GPIO Out [5]"
-  uo_out[6]: "GPIO Out [6]"
-  uo_out[7]: "GPIO Out [7]"
+  uo[0]: "GPIO Out [0]"
+  uo[1]: "GPIO Out [1]"
+  uo[2]: "GPIO Out [2]"
+  uo[3]: "GPIO Out [3]"
+  uo[4]: "GPIO Out [4]"
+  uo[5]: "GPIO Out [5]"
+  uo[6]: "GPIO Out [6]"
+  uo[7]: "GPIO Out [7]"
 
-  uio_in[0]: "Operand/Data [0]"
-  uio_in[1]: "Operand/Data [1]"
-  uio_in[2]: "Operand/Data [2]"
-  uio_in[3]: "Operand/Data [3]"
-  uio_in[4]: "Operand/Data [4]"
-  uio_in[5]: "Operand/Data [5]"
-  uio_in[6]: "Operand/Data [6]"
-  uio_in[7]: "Operand/Data [7]"
+  uio[0]: "Operand/Data [0]"
+  uio[1]: "Operand/Data [1]"
+  uio[2]: "Operand/Data [2]"
+  uio[3]: "Operand/Data [3]"
+  uio[4]: "Operand/Data [4]"
+  uio[5]: "Operand/Data [5]"
+  uio[6]: "Operand/Data [6]"
+  uio[7]: "Operand/Data [7]"
 
-  uio_out[0]: ""
-  uio_out[1]: ""
-  uio_out[2]: ""
-  uio_out[3]: ""
-  uio_out[4]: ""
-  uio_out[5]: ""
-  uio_out[6]: ""
-  uio_out[7]: ""
-
-  uio_oe[0]: ""
-  uio_oe[1]: ""
-  uio_oe[2]: ""
-  uio_oe[3]: ""
-  uio_oe[4]: ""
-  uio_oe[5]: ""
-  uio_oe[6]: ""
-  uio_oe[7]: ""
-
-  dependencies:
-    - sfram
+dependencies:
+  - sfram
