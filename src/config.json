@@ -14,7 +14,7 @@
     400.0,
     400.0
   ],
-  "PL_TARGET_DENSITY_PCT": 55,
+  "PL_TARGET_DENSITY_PCT": 40,
   "PL_ROUTABILITY_DRIVEN": true,
   "PDN_MULTILAYER": true,
   "PDN_CFG": "dir::pdn_cfg.tcl",
@@ -43,8 +43,8 @@
       "instances": {
         "sram_inst": {
           "location": [
-            110.0,
-            60.0
+            30.0,
+            30.0
           ],
           "orientation": "N"
         }

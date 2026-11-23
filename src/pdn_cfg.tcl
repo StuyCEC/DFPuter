@@ -1,14 +1,9 @@
 
-# GF180MCU PDN configuration for DFPuter
-# Based on LibreLane's standard PDN configuration.
-
-# Set up global power connections.
 source $::env(SCRIPTS_DIR)/openroad/common/io.tcl
 source $::env(SCRIPTS_DIR)/openroad/common/set_global_connections.tcl
 
 set_global_connections
 
-# Configure the main voltage domain and any secondary domains.
 set secondary []
 
 foreach vdd $::env(VDD_NETS) gnd $::env(GND_NETS) {
@@ -38,10 +33,6 @@ set_voltage_domain \
     -power $::env(VDD_NET) \
     -ground $::env(GND_NET) \
     -secondary_power $secondary
-
-# ------------------------------------------------------------
-# Standard-cell power grid
-# ------------------------------------------------------------
 
 if { $::env(PDN_MULTILAYER) == 1 } {
 
@@ -116,7 +107,6 @@ if { $::env(PDN_MULTILAYER) == 1 } {
         {*}$arg_list
 }
 
-# Standard-cell follow-pin rails.
 if { $::env(PDN_ENABLE_RAILS) == 1 } {
 
     add_pdn_stripe \
@@ -129,10 +119,6 @@ if { $::env(PDN_ENABLE_RAILS) == 1 } {
         -grid stdcell_grid \
         -layers "$::env(PDN_RAIL_LAYER) $::env(PDN_VERTICAL_LAYER)"
 }
-
-# ------------------------------------------------------------
-# Optional core ring
-# ------------------------------------------------------------
 
 if { $::env(PDN_CORE_RING) == 1 } {
 
@@ -187,10 +173,6 @@ if { $::env(PDN_CORE_RING) == 1 } {
     }
 }
 
-# ------------------------------------------------------------
-# Default macro grid
-# ------------------------------------------------------------
-
 define_pdn_grid \
     -macro \
     -default \
@@ -202,14 +184,6 @@ define_pdn_grid \
 add_pdn_connect \
     -grid macro \
     -layers "$::env(PDN_VERTICAL_LAYER) $::env(PDN_HORIZONTAL_LAYER)"
-
-# ------------------------------------------------------------
-# DFPuter SRAM-specific connection
-# ------------------------------------------------------------
-
-# SRAM power pins expose geometry on Metal2/Metal3 (VDD)
-# and Metal1/Metal2/Metal3 (VSS).
-# Bridge the exposed Metal3 shapes to the top-level Metal4 grid.
 
 define_pdn_grid \
     -macro \
