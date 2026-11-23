@@ -1,4 +1,3 @@
-
 source $::env(SCRIPTS_DIR)/openroad/common/io.tcl
 source $::env(SCRIPTS_DIR)/openroad/common/set_global_connections.tcl
 
@@ -180,10 +179,9 @@ define_pdn_grid \
     -starts_with POWER \
     -halo "$::env(PDN_HORIZONTAL_HALO) $::env(PDN_VERTICAL_HALO)"
 
-# Connect macro grid to the top-level GF180 grid (Metal4/Metal5).
 add_pdn_connect \
     -grid macro \
-    -layers "$::env(PDN_VERTICAL_LAYER) $::env(PDN_HORIZONTAL_LAYER)"
+    -layers "Metal3 Metal4"
 
 define_pdn_grid \
     -macro \
