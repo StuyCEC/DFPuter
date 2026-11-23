@@ -34,9 +34,26 @@ always @(*) begin
 
     if (state == `EXECUTE) begin
         case (opcode)
-            `OP_MOV: begin
-                datout = reg_val1;
-                reg_write = 1'b1;
+            `OP_NST: begin
+                case (opt1)
+                    `OP_NST_MOV: begin
+                        datout = reg_val1;
+                        reg_write = 1'b1;
+                    end
+
+                    `OP_NST_CMP: begin
+                        datout = reg_val1 - reg_val2;
+                        sflags[2] = reg_val1 >= reg_val2;
+                        sflags[3] = (reg_val1[7] ^ reg_val2[7]) &
+                                    (reg_val1[7] ^ datout[7]);
+                        flag_write = 1'b1;
+                    end
+
+                    `OP_NST_KIL: begin
+                    end
+
+                    default: ;
+                endcase
             end
 
             `OP_ST: begin
@@ -64,6 +81,13 @@ always @(*) begin
                 sflags[2] = reg_val1 >= reg_val2;
                 sflags[3] = (reg_val1[7] ^ reg_val2[7]) &
                             (reg_val1[7] ^ datout[7]);
+                reg_write = 1'b1;
+                flag_write = 1'b1;
+            end
+
+            `OP_XOR: begin
+                result = reg_val1 ^ reg_val2;
+                datout = result[7:0];
                 reg_write = 1'b1;
                 flag_write = 1'b1;
             end
@@ -98,10 +122,6 @@ always @(*) begin
                 sflags[2] = reg_val1[0];
                 reg_write = 1'b1;
                 flag_write = 1'b1;
-            end
-
-            `OP_JMP: begin
-                jmp_en = 1'b1;
             end
 
             `OP_JZ: begin

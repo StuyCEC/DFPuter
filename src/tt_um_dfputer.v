@@ -24,14 +24,12 @@ module tt_um_dfputer (
 
 `include "defines.vh"
 
-wire retr_mry = ui_in[7];
-
 reg [3:0] curr_sflags;
 wire [3:0] sflags;
 
-reg [7:0] regfile [0:15];
+reg [7:0] regfile [0:7];
 
-reg [2:0] state;
+reg [1:0] state;
 reg [7:0] pc;
 reg [7:0] sp;
 
@@ -69,7 +67,7 @@ integer i;
 
 assign uo_out = gpio_out;
 assign uio_out = gpio_uio_out;
-assign uio_oe = retr_mry ? 8'h00 : gpio_uio_oe;
+assign uio_oe = gpio_uio_oe;
 
 gf180mcu_ocd_ip_sram__sram256x8m8wm1 sram_inst (
     .CLK  (clk),
@@ -85,8 +83,8 @@ ControlUnit exec (
     .opcode(op),
     .opt1(opt1),
     .opt2(opt2),
-    .reg_val1(regfile[opt1]),
-    .reg_val2(regfile[opt2]),
+    .reg_val1(regfile[opt1[2:0]]),
+    .reg_val2(regfile[opt2[2:0]]),
     .curr_sflags(curr_sflags),
     .state(state),
     .sflags(sflags),
@@ -106,57 +104,39 @@ always @(*) begin
     next_ram_din = 8'h00;
 
     if (rst_n) begin
-        if (retr_mry) begin
-            next_ram_cen = 1'b0;
-            next_ram_gwen = 1'b0;
-            next_ram_wen = 8'h00;
-            next_ram_addr = {1'b0, ui_in[6:0]};
-            next_ram_din = uio_in;
-        end else begin
-            case (state)
-                `RETR_UPR: begin
+        case (state)
+            `EXECUTE: begin
+                if (op == `OP_LD) begin
                     next_ram_cen = 1'b0;
-                    next_ram_addr = pc;
-                end
-
-                `RETR_LWR: begin
+                    next_ram_addr = regfile[opt1[2:0]];
+                end else if (mem_wdata) begin
                     next_ram_cen = 1'b0;
-                    next_ram_addr = pc + 8'd1;
-                end
+                    next_ram_gwen = 1'b0;
+                    next_ram_wen = 8'h00;
+                    next_ram_addr = regfile[opt2[2:0]];
+                    next_ram_din = cu_datout;
+                end else if (op == `OP_EXT) begin
+                    case (opt1)
+                        `EXT_PUSH: begin
+                            next_ram_cen = 1'b0;
+                            next_ram_gwen = 1'b0;
+                            next_ram_wen = 8'h00;
+                            next_ram_addr = sp;
+                            next_ram_din = regfile[regdest[2:0]];
+                        end
 
-                `EXECUTE: begin
-                    if (op == `OP_LD) begin
-                        next_ram_cen = 1'b0;
-                        next_ram_addr = regfile[opt1];
-                    end else if (mem_wdata) begin
-                        next_ram_cen = 1'b0;
-                        next_ram_gwen = 1'b0;
-                        next_ram_wen = 8'h00;
-                        next_ram_addr = regfile[opt2];
-                        next_ram_din = cu_datout;
-                    end else if (op == `OP_EXT) begin
-                        case (opt1)
-                            `EXT_PUSH: begin
-                                next_ram_cen = 1'b0;
-                                next_ram_gwen = 1'b0;
-                                next_ram_wen = 8'h00;
-                                next_ram_addr = sp;
-                                next_ram_din = regfile[regdest];
-                            end
-
-                            `EXT_POP: begin
-                                next_ram_cen = 1'b0;
-                                next_ram_addr = sp + 8'd1;
-                            end
-                        endcase
-                    end
+                        `EXT_POP: begin
+                            next_ram_cen = 1'b0;
+                            next_ram_addr = sp + 8'd1;
+                        end
+                    endcase
                 end
-            endcase
-        end
+            end
+        endcase
     end
 end
 
-always @(negedge clk) begin
+always @(posedge clk) begin
     if (!rst_n) begin
         ram_cen <= 1'b1;
         ram_gwen <= 1'b1;
@@ -174,7 +154,7 @@ end
 
 always @(posedge clk) begin
     if (!rst_n) begin
-        state <= `RETR_UPR;
+        state <= `FETCH;
         pc <= 8'h00;
         sp <= 8'hFF;
         op <= 4'h0;
@@ -186,51 +166,28 @@ always @(posedge clk) begin
         gpio_uio_out <= 8'h00;
         gpio_uio_oe <= 8'h00;
 
-        for (i = 0; i < 16; i = i + 1)
-            regfile[i] <= 8'h00;
-    end else if (retr_mry) begin
-        state <= `RETR_UPR;
-        pc <= 8'h00;
-        sp <= 8'hFF;
-        op <= 4'h0;
-        regdest <= 4'h0;
-        opt1 <= 4'h0;
-        opt2 <= 4'h0;
-        curr_sflags <= 4'h0;
-        gpio_out <= 8'h00;
-        gpio_uio_out <= 8'h00;
-        gpio_uio_oe <= 8'h00;
-
-        for (i = 0; i < 16; i = i + 1)
+        for (i = 0; i < 8; i = i + 1)
             regfile[i] <= 8'h00;
     end else begin
         case (state)
-            `RETR_UPR: begin
-                state <= `WAIT_UPR;
-            end
-
-            `WAIT_UPR: begin
-                op <= ram_dout[7:4];
-                regdest <= ram_dout[3:0];
-                state <= `RETR_LWR;
-            end
-
-            `RETR_LWR: begin
-                state <= `WAIT_LWR;
-            end
-
-            `WAIT_LWR: begin
-                opt1 <= ram_dout[7:4];
-                opt2 <= ram_dout[3:0];
-                pc <= pc + 8'd2;
-                state <= `EXECUTE;
+            `FETCH: begin
+                op      <= ui_in[7:4];
+                regdest <= ui_in[3:0];
+                opt1    <= uio_in[7:4];
+                opt2    <= uio_in[3:0];
+                pc      <= pc + 8'd1;
+                state   <= `EXECUTE;
             end
 
             `EXECUTE: begin
-                state <= `RETR_UPR;
+                state <= `FETCH;
+
+                if (op == `OP_NST && opt1 == `OP_NST_KIL) begin
+                    state <= `KILL;
+                end
 
                 if (reg_wdata)
-                    regfile[regdest] <= cu_datout;
+                    regfile[regdest[2:0]] <= cu_datout;
 
                 if (flag_write)
                     curr_sflags <= sflags;
@@ -258,19 +215,19 @@ always @(posedge clk) begin
 
                         `EXT_GREAD: begin
                             case (opt2)
-                                4'h0: regfile[regdest] <= ui_in;
-                                4'h1: regfile[regdest] <= uio_in;
-                                4'h2: regfile[regdest] <= gpio_out;
-                                4'h3: regfile[regdest] <= gpio_uio_oe;
-                                default: regfile[regdest] <= 8'h00;
+                                4'h0: regfile[regdest[2:0]] <= ui_in;
+                                4'h1: regfile[regdest[2:0]] <= uio_in;
+                                4'h2: regfile[regdest[2:0]] <= gpio_out;
+                                4'h3: regfile[regdest[2:0]] <= gpio_uio_oe;
+                                default: regfile[regdest[2:0]] <= 8'h00;
                             endcase
                         end
 
                         `EXT_GWRITE: begin
                             case (opt2)
-                                4'h1: gpio_uio_out <= regfile[regdest];
-                                4'h2: gpio_out <= regfile[regdest];
-                                4'h3: gpio_uio_oe <= regfile[regdest];
+                                4'h1: gpio_uio_out <= regfile[regdest[2:0]];
+                                4'h2: gpio_out <= regfile[regdest[2:0]];
+                                4'h3: gpio_uio_oe <= regfile[regdest[2:0]];
                             endcase
                         end
                     endcase
@@ -278,8 +235,8 @@ always @(posedge clk) begin
             end
 
             `RETR_MRY: begin
-                regfile[regdest] <= ram_dout;
-                state <= `RETR_UPR;
+                regfile[regdest[2:0]] <= ram_dout;
+                state <= `FETCH;
             end
 
             `KILL: begin
@@ -287,7 +244,7 @@ always @(posedge clk) begin
             end
 
             default: begin
-                state <= `RETR_UPR;
+                state <= `FETCH;
             end
         endcase
     end
