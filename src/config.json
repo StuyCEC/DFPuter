@@ -14,7 +14,7 @@
     400.0,
     400.0
   ],
-  "PL_TARGET_DENSITY_PCT": 40,
+  "PL_TARGET_DENSITY_PCT": 20,
   "PL_ROUTABILITY_DRIVEN": true,
   "PDN_MULTILAYER": true,
   "PDN_CFG": "dir::pdn_cfg.tcl",
