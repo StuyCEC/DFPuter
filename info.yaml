@@ -1,24 +1,25 @@
-yaml_version: "6"
-
 project:
   title:        "Dufocklian Puter"
   author:       "Asad Patwekar"
   discord:      ""
-  description:  "8-bit CPU"
+  description:  "c pu"
   language:     "Verilog"
   clock_hz:     1000000
+
   tiles:        "2x2"
+
   top_module:   "tt_um_dfputer"
+
   source_files:
     - "tt_um_dfputer.v"
-    - "dfcu.v"
+    - "ControlUnit.v"
     - "defines.vh"
 
 pinout:
-  ui[0]: "Instruction [3] / Data"
-  ui[1]: "Instruction [2] / Data"
-  ui[2]: "Instruction [1] / Data"
-  ui[3]: "Instruction [0] / Data"
+  ui[0]: "Regdest [3]"
+  ui[1]: "Regdest [2]"
+  ui[2]: "Regdest [1]"
+  ui[3]: "Regdest [0]"
   ui[4]: "Opcode [3]"
   ui[5]: "Opcode [2]"
   ui[6]: "Opcode [1]"
@@ -33,14 +34,16 @@ pinout:
   uo[6]: "GPIO Out [6]"
   uo[7]: "GPIO Out [7]"
 
-  uio[0]: "Operand/Data [0]"
-  uio[1]: "Operand/Data [1]"
-  uio[2]: "Operand/Data [2]"
-  uio[3]: "Operand/Data [3]"
-  uio[4]: "Operand/Data [4]"
-  uio[5]: "Operand/Data [5]"
-  uio[6]: "Operand/Data [6]"
-  uio[7]: "Operand/Data [7]"
+  uio[0]: "Operand 2 [3]"
+  uio[1]: "Operand 2 [2]"
+  uio[2]: "Operand 2 [1]"
+  uio[3]: "Operand 2 [0]"
+  uio[4]: "Operand 1 [3]"
+  uio[5]: "Operand 1 [2]"
+  uio[6]: "Operand 1 [1]"
+  uio[7]: "Operand 1 [0]"
 
 dependencies:
   - sfram
+
+yaml_version: "6"
