@@ -1,8 +1,23 @@
 {
-  "PDN_CFG": "dir::pdn_cfg.tcl",
+  "DESIGN_NAME": "tt_um_dfputer",
+  "VERILOG_FILES": [
+    "dir::src/defines.vh",
+    "dir::src/ControlUnit.v",
+    "dir::src/tt_um_dfputer.v"
+  ],
+  "CLOCK_PORT": "clk",
+  "CLOCK_PERIOD": 50.0,
+  "FP_SIZING": "absolute",
+  "DIE_AREA": [
+    0,
+    0,
+    400.0,
+    400.0
+  ],
   "PL_TARGET_DENSITY_PCT": 55,
   "PL_ROUTABILITY_DRIVEN": true,
   "PDN_MULTILAYER": true,
+  "PDN_CFG": "dir::pdn_cfg.tcl",
   "MACROS": {
     "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
       "gds": [
@@ -28,8 +43,8 @@
       "instances": {
         "sram_inst": {
           "location": [
-            40,
-            40
+            30.0,
+            30.0
           ],
           "orientation": "N"
         }
@@ -37,15 +52,6 @@
     }
   },
   "PDN_MACRO_CONNECTIONS": [
-    "sram_inst VPWR VGND VDD VSS"
-  ],
-  "FP_SIZING": "absolute",
-  "DIE_AREA": [
-    0,
-    0,
-    1440.32,
-    736.96
-  ],
-  "CLOCK_PORT": "clk",
-  "CLOCK_PERIOD": 1000
+    "sram_inst VDD VPWR VSS VGND"
+  ]
 }

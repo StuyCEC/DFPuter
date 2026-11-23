@@ -6,7 +6,7 @@ project:
   language:     "Verilog"
   clock_hz:     1000000
 
-  tiles:        "4x4"
+  tiles:        "2x2"
 
   top_module:   "tt_um_dfputer"
 
@@ -16,32 +16,50 @@ project:
     - "defines.vh"
 
 pinout:
-  ui[0]: "Program Address[0]"
-  ui[1]: "Program Address[1]"
-  ui[2]: "Program Address[2]"
-  ui[3]: "Program Address[3]"
-  ui[4]: "Program Address[4]"
-  ui[5]: "Program Address[5]"
-  ui[6]: "Program Address[6]"
-  ui[7]: "retr_mry"
+    ui_in[0]: "Instruction [3] / Data"
+    ui_in[1]: "Instruction [2] / Data"
+    ui_in[2]: "Instruction [1] / Data"
+    ui_in[3]: "Instruction [0] / Data"
+    ui_in[4]: "Opcode [3]"
+    ui_in[5]: "Opcode [2]"
+    ui_in[6]: "Opcode [1]"
+    ui_in[7]: "Opcode [0]"
 
-  uo[0]: "gpio_out[0]"
-  uo[1]: "gpio_out[1]"
-  uo[2]: "gpio_out[2]"
-  uo[3]: "gpio_out[3]"
-  uo[4]: "gpio_out[4]"
-  uo[5]: "gpio_out[5]"
-  uo[6]: "gpio_out[6]"
-  uo[7]: "gpio_out[7]"
+    uo_out[0]: "GPIO Out [0]"
+    uo_out[1]: "GPIO Out [1]"
+    uo_out[2]: "GPIO Out [2]"
+    uo_out[3]: "GPIO Out [3]"
+    uo_out[4]: "GPIO Out [4]"
+    uo_out[5]: "GPIO Out [5]"
+    uo_out[6]: "GPIO Out [6]"
+    uo_out[7]: "GPIO Out [7]"
 
-  uio[0]: "Data In"
-  uio[1]: "Data In"
-  uio[2]: "Data In"
-  uio[3]: "Data In"
-  uio[4]: "Data In"
-  uio[5]: "Data In"
-  uio[6]: "Data In"
-  uio[7]: "Data In"
+    uio_in[0]: "Operand/Data [0]"
+    uio_in[1]: "Operand/Data [1]"
+    uio_in[2]: "Operand/Data [2]"
+    uio_in[3]: "Operand/Data [3]"
+    uio_in[4]: "Operand/Data [4]"
+    uio_in[5]: "Operand/Data [5]"
+    uio_in[6]: "Operand/Data [6]"
+    uio_in[7]: "Operand/Data [7]"
 
-# Do not change!
-yaml_version: 6
+    uio_out[0]: ""
+    uio_out[1]: ""
+    uio_out[2]: ""
+    uio_out[3]: ""
+    uio_out[4]: ""
+    uio_out[5]: ""
+    uio_out[6]: ""
+    uio_out[7]: ""
+
+    uio_oe[0]: ""
+    uio_oe[1]: ""
+    uio_oe[2]: ""
+    uio_oe[3]: ""
+    uio_oe[4]: ""
+    uio_oe[5]: ""
+    uio_oe[6]: ""
+    uio_oe[7]: ""
+
+  dependencies:
+    - sfram
