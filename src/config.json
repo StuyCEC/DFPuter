@@ -11,8 +11,8 @@
   "DIE_AREA": [
     0,
     0,
-    300.0,
-    300.0
+    400.0,
+    400.0
   ],
   "PL_TARGET_DENSITY_PCT": 25,
   "PL_ROUTABILITY_DRIVEN": true,
