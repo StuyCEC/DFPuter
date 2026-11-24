@@ -53,5 +53,11 @@
   },
   "PDN_MACRO_CONNECTIONS": [
     "sram_inst VDD VPWR VSS VGND"
-  ]
+  ],
+"PDN_ENABLE_PINS": true,
+  "PDN_VERTICAL_LAYER": "Metal4",
+  "PDN_HORIZONTAL_LAYER": "Metal4",
+  "PDN_VOFFSET": 5.0,
+  "PDN_HOFFSET": 5.0,
+  "RT_MAX_LAYER": "Metal4"
 }
