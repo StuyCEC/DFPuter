@@ -14,12 +14,13 @@
     400.0,
     400.0
   ],
-  "PL_TARGET_DENSITY_PCT": 20,
-  "PDN_VERTICAL_LAYER": "met4",
-"PDN_HORIZONTAL_LAYER": "met3",
+  "PL_TARGET_DENSITY_PCT": 55,
   "PL_ROUTABILITY_DRIVEN": true,
   "PDN_MULTILAYER": true,
   "PDN_CFG": "dir::pdn_cfg.tcl",
+  "PDN_VERTICAL_LAYER": "Metal4",
+  "PDN_HORIZONTAL_LAYER": "Metal3",
+  "PDN_RAIL_LAYER": "Metal1",
   "MACROS": {
     "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
       "gds": [
