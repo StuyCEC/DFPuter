@@ -2,7 +2,7 @@
   "DESIGN_NAME": "tt_um_dfputer",
   "VERILOG_FILES": [
     "dir::src/defines.vh",
-    "dir::src/dfcu.v",
+    "dir::src/ControlUnit.v",
     "dir::src/tt_um_dfputer.v"
   ],
   "CLOCK_PORT": "clk",
@@ -16,8 +16,8 @@
   ],
   "PL_TARGET_DENSITY_PCT": 20,
   "PL_ROUTABILITY_DRIVEN": true,
-  "FP_TAP_HORIZONTAL_HALO": 15.0,
-  "FP_TAP_VERTICAL_HALO": 15.0,
+  "FP_TAP_HORIZONTAL_HALO": 30.0,
+  "FP_TAP_VERTICAL_HALO": 30.0,
   "PDN_MULTILAYER": true,
   "MACROS": {
     "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
@@ -44,8 +44,8 @@
       "instances": {
         "sram_inst": {
           "location": [
-            200.0,
-            100.0
+            180.0,
+            90.0
           ],
           "orientation": "N"
         }
@@ -59,11 +59,11 @@
   "PDN_VERTICAL_LAYER": "Metal3",
   "PDN_HORIZONTAL_LAYER": "Metal4",
   "PDN_VWIDTH": 1.6,
-  "PDN_VPITCH": 20.0,
+  "PDN_VPITCH": 10.0,
   "PDN_VOFFSET": 0.0,
   "PDN_VSPACING": 1.6,
   "PDN_HWIDTH": 1.6,
-  "PDN_HPITCH": 20.0,
+  "PDN_HPITCH": 10.0,
   "PDN_HOFFSET": 0.0,
   "PDN_HSPACING": 1.6,
   "RT_MAX_LAYER": "Metal4"
