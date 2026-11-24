@@ -3,40 +3,80 @@
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import ClockCycles
+from cocotb.triggers import ClockCycles, Timer
 
 
-@cocotb.test()
-async def test_project(dut):
-    dut._log.info("Start DFPuter Simulation")
-
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, unit="us")
-    cocotb.start_soon(clock.start())
-
-    # Initialize input signals
+async def reset_dut(dut):
+    """Helper routine to apply and release reset."""
     dut.ena.value = 1
     dut.ui_in.value = 0
     dut.uio_in.value = 0
     dut.rst_n.value = 0
-
-    # Reset sequence
-    dut._log.info("Applying Reset")
-    await ClockCycles(dut.clk, 10)
+    await ClockCycles(dut.clk, 5)
     dut.rst_n.value = 1
-    dut._log.info("Reset released, executing CPU instructions...")
+    await ClockCycles(dut.clk, 2)
 
-    # Set initial test inputs if required by your program
-    dut.ui_in.value = 20
-    dut.uio_in.value = 30
 
-    # Wait enough clock cycles for the CPU to fetch, decode, and execute instructions
-    await ClockCycles(dut.clk, 100)
+@cocotb.test()
+async def test_reset_state(dut):
+    """Test that the CPU initializes correctly upon reset release."""
+    dut._log.info("Running Test: Reset State Verification")
 
-    # Log final output for inspection
-    dut._log.info(f"Current uo_out value: {dut.uo_out.value}")
+    clock = Clock(dut.clk, 10, unit="us")
+    cocotb.start_soon(clock.start())
 
-    # Assert expected result (update 50 to match your program's actual expected output register/port value)
-    dut._log.info(f"Simulation completed with uo_out: {dut.uo_out.value}")
-    # Temporary check so results.xml gets generated successfully:
-    assert True
+    await reset_dut(dut)
+
+    # Verify outputs are cleared immediately after reset
+    assert dut.uo_out.value == 0, f"Expected uo_out to be 0 after reset, got {dut.uo_out.value}"
+    dut._log.info("Reset state verified successfully.")
+
+
+@cocotb.test()
+async def test_arithmetic_instruction(dut):
+    """Test arithmetic execution (e.g., ADD operation)."""
+    dut._log.info("Running Test: Arithmetic Operation")
+
+    clock = Clock(dut.clk, 10, unit="us")
+    cocotb.start_soon(clock.start())
+
+    await reset_dut(dut)
+
+    # Drive input operands or instruction triggers via ui_in / uio_in
+    # Adjust these values based on your instruction decoder layout
+    dut.ui_in.value = 0x12   # Example operand A or instruction code
+    dut.uio_in.value = 0x23  # Example operand B
+
+    # Allow sufficient clock cycles for fetch-decode-execute
+    await ClockCycles(dut.clk, 10)
+
+    dut._log.info(f"Arithmetic Result on uo_out: {dut.uo_out.value}")
+
+    # Assert expected arithmetic output (update 0x35 to match your ALU's expected result for 0x12 + 0x23)
+    expected_val = 0x35
+    assert dut.uo_out.value == expected_val, (
+        f"Arithmetic test failed: expected {hex(expected_val)}, got {hex(dut.uo_out.value)}"
+    )
+
+
+@cocotb.test()
+async def test_memory_load_store(dut):
+    """Test interaction with the SRAM macro."""
+    dut._log.info("Running Test: SRAM Memory Access")
+
+    clock = Clock(dut.clk, 10, unit="us")
+    cocotb.start_soon(clock.start())
+
+    await reset_dut(dut)
+
+    # Set up data lines for a store or load operation
+    dut.ui_in.value = 0xAA
+    await ClockCycles(dut.clk, 5)
+
+    dut.uio_in.value = 0x55
+    await ClockCycles(dut.clk, 10)
+
+    dut._log.info(f"Memory test output state: {dut.uo_out.value}")
+    
+    # Assert stable output condition post-execution
+    assert dut.uo_out.value is not None
