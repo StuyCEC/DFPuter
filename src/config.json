@@ -16,6 +16,7 @@
   ],
   "PL_TARGET_DENSITY_PCT": 20,
   "PL_ROUTABILITY_DRIVEN": true,
+  "RT_MAX_LAYER": "Metal4",
   "PDN_MULTILAYER": true,
   "PDN_CFG": "dir::pdn_cfg.tcl",
   "MACROS": {

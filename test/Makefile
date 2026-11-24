@@ -30,8 +30,8 @@ COMPILE_ARGS    += -DUNIT_DELAY=\#1
 # this gets copied in by the GDS action workflow
 VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
 
-# INCLUDE THE GF180MCU STANDARD CELL LIBRARY VERILOG MODELS:
-VERILOG_SOURCES += $(PDK_ROOT)/gf180mcu/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v
+# INCLUDE THE GF180MCU STANDARD CELL LIBRARY VERILOG MODELS (using active PDK variant variable):
+VERILOG_SOURCES += $(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v
 
 endif
 
