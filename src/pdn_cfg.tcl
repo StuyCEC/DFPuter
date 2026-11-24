@@ -179,6 +179,7 @@ define_pdn_grid \
     -starts_with POWER \
     -halo "$::env(PDN_HORIZONTAL_HALO) $::env(PDN_VERTICAL_HALO)"
 
+# Connect macro grid strictly to Metal3/Metal4
 add_pdn_connect \
     -grid macro \
     -layers "Metal3 Metal4"
