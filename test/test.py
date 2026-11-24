@@ -8,33 +8,33 @@ from cocotb.triggers import ClockCycles
 
 @cocotb.test()
 async def test_project(dut):
-    dut._log.info("Start")
+    dut._log.info("Start DFPuter Simulation")
 
     # Set the clock period to 10 us (100 KHz)
     clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
 
-    # Reset
-    dut._log.info("Reset")
+    # Initialize input signals
     dut.ena.value = 1
     dut.ui_in.value = 0
     dut.uio_in.value = 0
     dut.rst_n.value = 0
+
+    # Reset sequence
+    dut._log.info("Applying Reset")
     await ClockCycles(dut.clk, 10)
     dut.rst_n.value = 1
+    dut._log.info("Reset released, executing CPU instructions...")
 
-    dut._log.info("Test project behavior")
-
-    # Set the input values you want to test
+    # Set initial test inputs if required by your program
     dut.ui_in.value = 20
     dut.uio_in.value = 30
 
-    # Wait for one clock cycle to see the output values
-    await ClockCycles(dut.clk, 1)
+    # Wait enough clock cycles for the CPU to fetch, decode, and execute instructions
+    await ClockCycles(dut.clk, 100)
 
-    # The following assersion is just an example of how to check the output values.
-    # Change it to match the actual expected output of your module:
-    assert dut.uo_out.value == 50
+    # Log final output for inspection
+    dut._log.info(f"Current uo_out value: {dut.uo_out.value}")
 
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
+    # Assert expected result (update 50 to match your program's actual expected output register/port value)
+    assert dut.uo_out.value == 50, f"Expected uo_out to be 50, but got {dut.uo_out.value}"
