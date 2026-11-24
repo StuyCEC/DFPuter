@@ -168,7 +168,7 @@ if { $::env(PDN_CORE_RING) == 1 } {
     } {
         add_pdn_connect \
             -grid stdcell_grid \
-            -layers "$::env(PDN_CORE_VERTICAL_LAYER) $::env(PDN_CORE_HORIZONTAL_LAYER)"
+            -layers "$::env(PDN_CORE_VERTICAL_LAYER) $::env(PDN_HORIZONTAL_LAYER)"
     }
 }
 
