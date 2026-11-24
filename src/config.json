@@ -43,8 +43,8 @@
       "instances": {
         "sram_inst": {
           "location": [
-            30.0,
-            30.0
+            80.0,
+            60.0
           ],
           "orientation": "N"
         }
