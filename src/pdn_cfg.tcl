@@ -174,19 +174,27 @@ if { $::env(PDN_CORE_RING) == 1 } {
 
 define_pdn_grid \
     -macro \
-    -default \
-    -name macro \
-    -starts_with POWER \
-    -halo "$::env(PDN_HORIZONTAL_HALO) $::env(PDN_VERTICAL_HALO)"
-
-add_pdn_connect \
-    -grid macro \
-    -layers "Metal3 Metal4"
-
-define_pdn_grid \
-    -macro \
     -instances "sram_inst" \
     -name sram_grid \
+    -starts_with POWER \
+    -halo "10.0 10.0"
+
+add_pdn_stripe \
+    -grid sram_grid \
+    -layer $::env(PDN_VERTICAL_LAYER) \
+    -width $::env(PDN_VWIDTH) \
+    -pitch $::env(PDN_VPITCH) \
+    -offset $::env(PDN_VOFFSET) \
+    -spacing $::env(PDN_VSPACING) \
+    -starts_with POWER
+
+add_pdn_stripe \
+    -grid sram_grid \
+    -layer $::env(PDN_HORIZONTAL_LAYER) \
+    -width $::env(PDN_HWIDTH) \
+    -pitch $::env(PDN_HPITCH) \
+    -offset $::env(PDN_HOFFSET) \
+    -spacing $::env(PDN_HSPACING) \
     -starts_with POWER
 
 add_pdn_connect \
