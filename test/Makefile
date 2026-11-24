@@ -6,7 +6,7 @@ SIM ?= icarus
 FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = tt_um_dfputer.v ControlUnit.v defines.vh
+PROJECT_SOURCES = tt_um_dfputer.v dfcu.v defines.vh
 
 # ALWAYS include the SRAM behavioral model for both RTL and Gate-Level sims:
 VERILOG_SOURCES += $(PWD)/../src/sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1.v
