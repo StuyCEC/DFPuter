@@ -38,7 +38,7 @@ if { $::env(PDN_MULTILAYER) == 1 } {
     set arg_list [list]
 
     if { $::env(PDN_ENABLE_PINS) } {
-        lappend arg_list -pins "$::env(PDN_VERTICAL_LAYER) $::env(PDN_HORIZONTAL_LAYER)"
+        lappend arg_list -pins "Metal4"
     }
 
     define_pdn_grid \
@@ -81,7 +81,7 @@ if { $::env(PDN_MULTILAYER) == 1 } {
     set arg_list [list]
 
     if { $::env(PDN_ENABLE_PINS) } {
-        lappend arg_list -pins "$::env(PDN_VERTICAL_LAYER)"
+        lappend arg_list -pins "Metal4"
     }
 
     define_pdn_grid \
