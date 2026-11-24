@@ -22,6 +22,8 @@
   "PDN_VERTICAL_LAYER": "Metal4",
   "PDN_HORIZONTAL_LAYER": "Metal3",
   "PDN_RAIL_LAYER": "Metal1",
+  "PDN_HORIZONTAL_HALO": 15,
+  "PDN_VERTICAL_HALO": 15,
   "MACROS": {
     "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
       "gds": [
