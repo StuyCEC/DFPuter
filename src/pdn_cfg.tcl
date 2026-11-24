@@ -179,10 +179,10 @@ define_pdn_grid \
     -starts_with POWER \
     -halo "$::env(PDN_HORIZONTAL_HALO) $::env(PDN_VERTICAL_HALO)"
 
-# Connect macro grid strictly to lowercase met3/met4
+# Connect macro grid strictly to Metal3/Metal4
 add_pdn_connect \
     -grid macro \
-    -layers "met3 met4"
+    -layers "Metal3 Metal4"
 
 define_pdn_grid \
     -macro \
@@ -192,4 +192,4 @@ define_pdn_grid \
 
 add_pdn_connect \
     -grid sram_grid \
-    -layers "met3 met4"
+    -layers "Metal3 Metal4"
