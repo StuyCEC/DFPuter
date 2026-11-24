@@ -3,8 +3,8 @@ yaml_version: 6
 project:
   title:        "Dufocklian Puter"
   author:       "Asad Patwekar"
-  discord:      ""
-  description:  "c pu"
+  discord:      "asadpetwalker"
+  description:  "8-bit CPU"
   language:     "Verilog"
   clock_hz:     20000000
 
