@@ -6,7 +6,7 @@ SIM ?= icarus
 FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = tt_um_dfputer.v dfcu.v defines.vh
+PROJECT_SOURCES = tt_um_dfputer.v ControlUnit.v defines.vh
 
 # ALWAYS include the SRAM behavioral model for both RTL and Gate-Level sims:
 VERILOG_SOURCES += $(PWD)/../src/sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1.v
@@ -30,7 +30,8 @@ COMPILE_ARGS    += -DUNIT_DELAY=\#1
 # this gets copied in by the GDS action workflow
 VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
 
-# INCLUDE THE GF180MCU STANDARD CELL LIBRARY VERILOG MODELS (using active PDK variant variable):
+# INCLUDE THE GF180MCU PRIMITIVES AND STANDARD CELL LIBRARY VERILOG MODELS:
+VERILOG_SOURCES += $(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/primitives.v
 VERILOG_SOURCES += $(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v
 
 endif
