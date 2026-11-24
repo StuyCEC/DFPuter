@@ -187,8 +187,7 @@ define_pdn_grid \
     -macro \
     -instances "sram_inst" \
     -name sram_grid \
-    -starts_with POWER \
-    -halo "$::env(PDN_HORIZONTAL_HALO) $::env(PDN_VERTICAL_HALO)"
+    -starts_with POWER
 
 add_pdn_connect \
     -grid sram_grid \
