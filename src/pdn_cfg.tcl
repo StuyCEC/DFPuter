@@ -116,7 +116,7 @@ if { $::env(PDN_ENABLE_RAILS) == 1 } {
 
     add_pdn_connect \
         -grid stdcell_grid \
-        -layers "$::env(PDN_RAIL_LAYER) $::env(PDN_VERTICAL_LAYER)"
+        -layers "$::env(PDN_RAIL_LAYER) $::env(PDN_VERTICAL_Layer)"
 }
 
 if { $::env(PDN_CORE_RING) == 1 } {
@@ -176,4 +176,8 @@ define_pdn_grid \
     -macro \
     -instances "sram_inst" \
     -name sram_grid \
-    -starts_with POWER
+    -starts_with POWER \
+    -connect {
+        {power VPWR VDD}
+        {ground VGND VSS}
+    }

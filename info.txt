@@ -1,0 +1,250 @@
+yaml_version: 6
+
+project:
+  title:        "Dufocklian Puter"
+  author:       "Asad Patwekar"
+  discord:      "asadpetwalker"
+  description:  "8-bit CPU"
+  language:     "Verilog"
+  clock_hz:     20000000
+
+  tiles:        "2x2"
+
+  top_module:   "tt_um_dfputer"
+
+  source_files:
+    - "tt_um_dfputer.v"
+    - "dfcu.v"
+    - "defines.vh"
+
+pinout:
+  ui[0]: "Regdest [3]"
+  ui[1]: "Regdest [2]"
+  ui[2]: "Regdest [1]"
+  ui[3]: "Regdest [0]"
+  ui[4]: "Opcode [3]"
+  ui[5]: "Opcode [2]"
+  ui[6]: "Opcode [1]"
+  ui[7]: "Opcode [0]"
+
+  uo[0]: "GPIO Out [0]"
+  uo[1]: "GPIO Out [1]"
+  uo[2]: "GPIO Out [2]"
+  uo[3]: "GPIO Out [3]"
+  uo[4]: "GPIO Out [4]"
+  uo[5]: "GPIO Out [5]"
+  uo[6]: "GPIO Out [6]"
+  uo[7]: "GPIO Out [7]"
+
+  uio[0]: "Operand 2 [3]"
+  uio[1]: "Operand 2 [2]"
+  uio[2]: "Operand 2 [1]"
+  uio[3]: "Operand 2 [0]"
+  uio[4]: "Operand 1 [3]"
+  uio[5]: "Operand 1 [2]"
+  uio[6]: "Operand 1 [1]"
+  uio[7]: "Operand 1 [0]"
+
+dependencies:
+  - sframname: docs
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  docs:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Build docs
+        uses: TinyTapeout/tt-gds-action/docs@ttgf26c
+name: fpga
+
+on:
+  push:
+    # Comment out (or remove) the following line to run the FPGA workflow on every push:
+    branches: none
+  workflow_dispatch:
+
+jobs:
+  fpga:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: FPGA bitstream for TT ASIC Sim (ICE40UP5K)
+        uses: TinyTapeout/tt-gds-action/fpga/ice40up5k@ttgf26c
+name: gds
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  gds:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Build GDS
+        uses: TinyTapeout/tt-gds-action@ttgf26c
+        with:
+          pdk: gf180mcuD
+
+  precheck:
+    needs: gds
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Run Tiny Tapeout Precheck
+        uses: TinyTapeout/tt-gds-action/precheck@ttgf26c
+
+  gl_test:
+    needs: gds
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: GL test
+        uses: TinyTapeout/tt-gds-action/gl_test@ttgf26c
+
+  viewer:
+    needs: gds
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    steps:
+      - uses: TinyTapeout/tt-gds-action/viewer@ttgf26c
+name: test
+on: [push, workflow_dispatch]
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install iverilog
+        shell: bash
+        run: sudo apt-get update && sudo apt-get install -y iverilog
+
+      # Set Python up and install cocotb
+      - name: Setup python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install Python packages
+        shell: bash
+        run: pip install -r test/requirements.txt
+
+      - name: Run tests
+        run: |
+          cd test
+          make clean
+          make
+          # make will return success even if the tests fail, so check results.xml for failed tests
+          python -m cocotb_tools.check_results results.xml
+
+      - name: Test Summary
+        uses: test-summary/action@v2.4
+        with:
+          paths: "test/results.xml"
+        if: always()
+
+      - name: upload waveform and test results
+        if: success() || failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results
+          path: |
+            test/tb.fst
+            test/results.xml
+            test/output/*
+{
+  "DESIGN_NAME": "tt_um_dfputer",
+  "VERILOG_FILES": [
+    "dir::src/defines.vh",
+    "dir::src/ControlUnit.v",
+    "dir::src/tt_um_dfputer.v"
+  ],
+  "CLOCK_PORT": "clk",
+  "CLOCK_PERIOD": 50.0,
+  "FP_SIZING": "absolute",
+  "DIE_AREA": [
+    0,
+    0,
+    400.0,
+    400.0
+  ],
+  "PL_TARGET_DENSITY_PCT": 20,
+  "PL_ROUTABILITY_DRIVEN": true,
+  "FP_TAP_HORIZONTAL_HALO": 30.0,
+  "FP_TAP_VERTICAL_HALO": 30.0,
+  "PDN_MULTILAYER": true,
+  "MACROS": {
+    "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
+      "gds": [
+        "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1.gds"
+      ],
+      "lef": [
+        "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1.lef"
+      ],
+      "vh": [
+        "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__blackbox.v"
+      ],
+      "lib": {
+        "*_tt_025C_3v30": [
+          "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__tt_025C_3v30.lib"
+        ],
+        "*_ss_125C_3v00": [
+          "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__ss_125C_3v00.lib"
+        ],
+        "*_ff_n40C_3v60": [
+          "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__ff_n40C_3v60.lib"
+        ]
+      },
+      "instances": {
+        "sram_inst": {
+          "location": [
+            180.0,
+            90.0
+          ],
+          "orientation": "N"
+        }
+      }
+    }
+  },
+  "PDN_MACRO_CONNECTIONS": [
+    "sram_inst VDD VPWR VSS VGND"
+  ],
+  "PDN_ENABLE_PINS": true,
+  "PDN_VERTICAL_LAYER": "Metal3",
+  "PDN_HORIZONTAL_LAYER": "Metal4",
+  "PDN_VWIDTH": 1.6,
+  "PDN_VPITCH": 10.0,
+  "PDN_VOFFSET": 0.0,
+  "PDN_VSPACING": 1.6,
+  "PDN_HWIDTH": 1.6,
+  "PDN_HPITCH": 10.0,
+  "PDN_HOFFSET": 0.0,
+  "PDN_HSPACING": 1.6,
+  "RT_MAX_LAYER": "Metal4"
+}

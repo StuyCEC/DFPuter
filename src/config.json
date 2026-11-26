@@ -66,5 +66,7 @@
   "PDN_HPITCH": 10.0,
   "PDN_HOFFSET": 0.0,
   "PDN_HSPACING": 1.6,
-  "RT_MAX_LAYER": "Metal4"
+  "RT_MAX_LAYER": "Metal4",
+  "PDN_EXTEND_TO": "boundary",
+  "PDN_CORE_RING": false
 }
