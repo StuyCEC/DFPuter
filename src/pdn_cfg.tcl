@@ -1,35 +1,49 @@
 source $::env(SCRIPTS_DIR)/openroad/common/io.tcl
 source $::env(SCRIPTS_DIR)/openroad/common/set_global_connections.tcl
 
-# Use wildcard patterns to match any variation of VDD/VSS pins on sram_inst
-add_global_connection -net $::env(VDD_NET) -inst_pattern sram_inst -pin_pattern {^VDD.*|^vdd.*}
-add_global_connection -net $::env(GND_NET) -inst_pattern sram_inst -pin_pattern {^VSS.*|^vss.*}
+
+add_global_connection \
+    -net $::env(VDD_NET) \
+    -inst_pattern {sram_inst} \
+    -pin_pattern {^(VDD.*|vdd.*)$}
+
+add_global_connection \
+    -net $::env(GND_NET) \
+    -inst_pattern {sram_inst} \
+    -pin_pattern {^(VSS.*|vss.*)$}
 
 set_global_connections
 
-set secondary []
+
+set secondary {}
 
 foreach vdd $::env(VDD_NETS) gnd $::env(GND_NETS) {
-    if { $vdd != $::env(VDD_NET) } {
+
+    if {$vdd ne $::env(VDD_NET)} {
         lappend secondary $vdd
+
         set db_net [[ord::get_db_block] findNet $vdd]
-        if { $db_net == "NULL" } {
+
+        if {$db_net eq "NULL"} {
             set net [odb::dbNet_create [ord::get_db_block] $vdd]
             $net setSpecial
-            $net setSigType "POWER"
+            $net setSigType POWER
         }
     }
 
-    if { $gnd != $::env(GND_NET) } {
+    if {$gnd ne $::env(GND_NET)} {
         lappend secondary $gnd
+
         set db_net [[ord::get_db_block] findNet $gnd]
-        if { $db_net == "NULL" } {
+
+        if {$db_net eq "NULL"} {
             set net [odb::dbNet_create [ord::get_db_block] $gnd]
             $net setSpecial
-            $net setSigType "GROUND"
+            $net setSigType GROUND
         }
     }
 }
+
 
 set_voltage_domain \
     -name CORE \
@@ -37,24 +51,30 @@ set_voltage_domain \
     -ground $::env(GND_NET) \
     -secondary_power $secondary
 
-if { $::env(PDN_MULTILAYER) == 1 } {
 
-    set arg_list [list]
+set extend_options {}
 
-    if { $::env(PDN_ENABLE_PINS) } {
-        lappend arg_list -pins "Metal4"
-    }
+if {$::env(PDN_EXTEND_TO) eq "core_ring"} {
+    lappend extend_options -extend_to_core_ring
+} elseif {$::env(PDN_EXTEND_TO) eq "boundary"} {
+    lappend extend_options -extend_to_boundary
+}
 
-    define_pdn_grid \
-        -name stdcell_grid \
-        -starts_with POWER \
-        -voltage_domain CORE \
-        {*}$arg_list
 
-    set arg_list [list]
+set grid_options {}
 
-    append_if_equals arg_list PDN_EXTEND_TO "core_ring" -extend_to_core_ring
-    append_if_equals arg_list PDN_EXTEND_TO "boundary" -extend_to_boundary
+if {$::env(PDN_ENABLE_PINS)} {
+    lappend grid_options -pins Metal4
+}
+
+define_pdn_grid \
+    -name stdcell_grid \
+    -voltage_domains CORE \
+    -starts_with POWER \
+    {*}$grid_options
+
+
+if {$::env(PDN_MULTILAYER)} {
 
     add_pdn_stripe \
         -grid stdcell_grid \
@@ -64,7 +84,7 @@ if { $::env(PDN_MULTILAYER) == 1 } {
         -offset $::env(PDN_VOFFSET) \
         -spacing $::env(PDN_VSPACING) \
         -starts_with POWER \
-        {*}$arg_list
+        {*}$extend_options
 
     add_pdn_stripe \
         -grid stdcell_grid \
@@ -74,30 +94,13 @@ if { $::env(PDN_MULTILAYER) == 1 } {
         -offset $::env(PDN_HOFFSET) \
         -spacing $::env(PDN_HSPACING) \
         -starts_with POWER \
-        {*}$arg_list
+        {*}$extend_options
 
     add_pdn_connect \
         -grid stdcell_grid \
         -layers "$::env(PDN_VERTICAL_LAYER) $::env(PDN_HORIZONTAL_LAYER)"
 
 } else {
-
-    set arg_list [list]
-
-    if { $::env(PDN_ENABLE_PINS) } {
-        lappend arg_list -pins "Metal4"
-    }
-
-    define_pdn_grid \
-        -name stdcell_grid \
-        -starts_with POWER \
-        -voltage_domain CORE \
-        {*}$arg_list
-
-    set arg_list [list]
-
-    append_if_equals arg_list PDN_EXTEND_TO "core_ring" -extend_to_core_ring
-    append_if_equals arg_list PDN_EXTEND_TO "boundary" -extend_to_boundary
 
     add_pdn_stripe \
         -grid stdcell_grid \
@@ -107,10 +110,11 @@ if { $::env(PDN_MULTILAYER) == 1 } {
         -offset $::env(PDN_VOFFSET) \
         -spacing $::env(PDN_VSPACING) \
         -starts_with POWER \
-        {*}$arg_list
+        {*}$extend_options
 }
 
-if { $::env(PDN_ENABLE_RAILS) == 1 } {
+
+if {$::env(PDN_ENABLE_RAILS)} {
 
     add_pdn_stripe \
         -grid stdcell_grid \
@@ -123,26 +127,41 @@ if { $::env(PDN_ENABLE_RAILS) == 1 } {
         -layers "$::env(PDN_RAIL_LAYER) $::env(PDN_VERTICAL_LAYER)"
 }
 
-if { $::env(PDN_CORE_RING) == 1 } {
 
-    if { $::env(PDN_MULTILAYER) != 1 } {
+if {$::env(PDN_CORE_RING)} {
+
+    if {!$::env(PDN_MULTILAYER)} {
         error "PDN_CORE_RING requires PDN_MULTILAYER"
     }
 
-    set arg_list [list]
+    set ring_options {}
 
-    append_if_flag arg_list PDN_CORE_RING_ALLOW_OUT_OF_DIE -allow_out_of_die
-    append_if_flag arg_list PDN_CORE_RING_CONNECT_TO_PADS -connect_to_pads
-    append_if_equals arg_list PDN_EXTEND_TO "boundary" -extend_to_boundary
+    if {
+        [info exists ::env(PDN_CORE_RING_ALLOW_OUT_OF_DIE)] &&
+        $::env(PDN_CORE_RING_ALLOW_OUT_OF_DIE)
+    } {
+        lappend ring_options -allow_out_of_die
+    }
+
+    if {
+        [info exists ::env(PDN_CORE_RING_CONNECT_TO_PADS)] &&
+        $::env(PDN_CORE_RING_CONNECT_TO_PADS)
+    } {
+        lappend ring_options -connect_to_pads
+    }
+
+    if {$::env(PDN_EXTEND_TO) eq "boundary"} {
+        lappend ring_options -extend_to_boundary
+    }
 
     set pdn_core_vertical_layer $::env(PDN_VERTICAL_LAYER)
     set pdn_core_horizontal_layer $::env(PDN_HORIZONTAL_LAYER)
 
-    if { [info exists ::env(PDN_CORE_VERTICAL_LAYER)] } {
+    if {[info exists ::env(PDN_CORE_VERTICAL_LAYER)]} {
         set pdn_core_vertical_layer $::env(PDN_CORE_VERTICAL_LAYER)
     }
 
-    if { [info exists ::env(PDN_CORE_HORIZONTAL_LAYER)] } {
+    if {[info exists ::env(PDN_CORE_HORIZONTAL_LAYER)]} {
         set pdn_core_horizontal_layer $::env(PDN_CORE_HORIZONTAL_LAYER)
     }
 
@@ -152,15 +171,15 @@ if { $::env(PDN_CORE_RING) == 1 } {
         -widths "$::env(PDN_CORE_RING_VWIDTH) $::env(PDN_CORE_RING_HWIDTH)" \
         -spacings "$::env(PDN_CORE_RING_VSPACING) $::env(PDN_CORE_RING_HSPACING)" \
         -core_offset "$::env(PDN_CORE_RING_VOFFSET) $::env(PDN_CORE_RING_HOFFSET)" \
-        {*}$arg_list
+        {*}$ring_options
 
-    if { [info exists ::env(PDN_CORE_VERTICAL_LAYER)] } {
+    if {[info exists ::env(PDN_CORE_VERTICAL_LAYER)]} {
         add_pdn_connect \
             -grid stdcell_grid \
             -layers "$::env(PDN_CORE_VERTICAL_LAYER) $::env(PDN_HORIZONTAL_LAYER)"
     }
 
-    if { [info exists ::env(PDN_CORE_HORIZONTAL_LAYER)] } {
+    if {[info exists ::env(PDN_CORE_HORIZONTAL_LAYER)]} {
         add_pdn_connect \
             -grid stdcell_grid \
             -layers "$::env(PDN_CORE_HORIZONTAL_LAYER) $::env(PDN_VERTICAL_LAYER)"
@@ -176,14 +195,17 @@ if { $::env(PDN_CORE_RING) == 1 } {
     }
 }
 
-# Dedicated macro grid for sram_inst using Metal3 and Metal4 layers
+
 define_pdn_grid \
     -macro \
-    -instances "sram_inst" \
+    -instances {sram_inst} \
     -name sram_grid \
     -starts_with POWER \
     -halo "$::env(PDN_HORIZONTAL_HALO) $::env(PDN_VERTICAL_HALO)"
 
 add_pdn_connect \
     -grid sram_grid \
-    -layers "Metal3 Metal4"
+    -layers "$::env(PDN_VERTICAL_LAYER) $::env(PDN_HORIZONTAL_LAYER)"
+
+
+pdngen
