@@ -164,7 +164,7 @@ if { $::env(PDN_CORE_RING) == 1 } {
 
     if {
         [info exists ::env(PDN_CORE_VERTICAL_LAYER)] &&
-        [info exists ::env(PDN_CORE_HORIZONTAL_LAYER)]
+        [info exists ::env(PDN_CORE_HORIZONTAL_Layer)]
     } {
         add_pdn_connect \
             -grid stdcell_grid \
@@ -174,11 +174,11 @@ if { $::env(PDN_CORE_RING) == 1 } {
 
 define_pdn_grid \
     -macro \
-    -default \
-    -name macro \
+    -instances "sram_inst" \
+    -name sram_grid \
     -starts_with POWER \
     -halo "$::env(PDN_HORIZONTAL_HALO) $::env(PDN_VERTICAL_HALO)"
 
 add_pdn_connect \
-    -grid macro \
+    -grid sram_grid \
     -layers "Metal3 Metal4"
