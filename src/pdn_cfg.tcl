@@ -37,7 +37,7 @@ set_voltage_domain \
     -ground $::env(GND_NET) \
     -secondary_power $secondary
 
-# Standard cell power grid constrained to avoid macro collision
+# Standard cell power grid definition
 define_pdn_grid \
     -name stdcell_grid \
     -starts_with POWER \
