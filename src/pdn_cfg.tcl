@@ -1,9 +1,4 @@
 source $::env(SCRIPTS_DIR)/openroad/common/io.tcl
-
-# Explicitly map SRAM macro power pins to core power nets before default setup
-add_global_connection -net $::env(VDD_NET) -inst_pattern sram_inst -pin_pattern VDD -power
-add_global_connection -net $::env(GND_NET) -inst_pattern sram_inst -pin_pattern VSS -ground
-
 source $::env(SCRIPTS_DIR)/openroad/common/set_global_connections.tcl
 
 set_global_connections
@@ -177,7 +172,7 @@ if { $::env(PDN_CORE_RING) == 1 } {
     }
 }
 
-# Dedicated grid for sram_inst
+# Explicit macro grid for sram_inst using Metal3 and Metal4 layers
 define_pdn_grid \
     -macro \
     -instances "sram_inst" \
