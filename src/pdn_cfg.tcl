@@ -3,12 +3,6 @@ source $::env(SCRIPTS_DIR)/openroad/common/set_global_connections.tcl
 
 set_global_connections
 
-# Force global connections for the SRAM macro to bypass ODB-0403 conflicts
-add_global_connection -net $::env(VDD_NET) -pin VDD -inst sram_inst -force
-add_global_connection -net $::env(GND_NET) -pin VSS -inst sram_inst -force
-add_global_connection -net $::env(VDD_NET) -pin VPWR -inst sram_inst -force
-add_global_connection -net $::env(GND_NET) -pin VGND -inst sram_inst -force
-
 set secondary []
 
 foreach vdd $::env(VDD_NETS) gnd $::env(GND_NETS) {
