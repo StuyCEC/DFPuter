@@ -21,12 +21,7 @@
   "PDN_MULTILAYER": true,
   "PDN_VERTICAL_LAYER": "Metal3",
   "PDN_HORIZONTAL_LAYER": "Metal4",
-  "PDN_VPITCH": 25.0,
-  "PDN_HPITCH": 25.0,
-  "PDN_VWIDTH": 1.6,
-  "PDN_HWIDTH": 1.6,
   "PDN_EXTEND_TO": "boundary",
-  "PDN_CFG": "dir::pdn_cfg.tcl",
   "MACROS": {
     "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
       "gds": [
