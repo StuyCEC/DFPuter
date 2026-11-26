@@ -1,7 +1,7 @@
 source $::env(SCRIPTS_DIR)/openroad/common/io.tcl
 source $::env(SCRIPTS_DIR)/openroad/common/set_global_connections.tcl
 
-# Ensure global connections match SRAM macro power pins
+# Use wildcard patterns to match VDD/VSS pins on sram_inst
 add_global_connection -net $::env(VDD_NET) -inst_pattern sram_inst -pin_pattern {^VDD.*|^vdd.*}
 add_global_connection -net $::env(GND_NET) -inst_pattern sram_inst -pin_pattern {^VSS.*|^vss.*}
 
@@ -172,7 +172,7 @@ if { $::env(PDN_CORE_RING) == 1 } {
     } {
         add_pdn_connect \
             -grid stdcell_grid \
-            -layers "$::env(PDN_CORE_VERTICAL_LAYER) $::env(PDN_HORIZONTAL_LAYER)"
+            -layers "$::env(PDN_CORE_VERTICAL_LAYER) $::env(PDN_CORE_HORIZONTAL_LAYER)"
     }
 }
 
@@ -187,9 +187,3 @@ define_pdn_grid \
 add_pdn_connect \
     -grid sram_grid \
     -layers "Metal3 Metal4"
-
-# Explicitly block stdcell rails from generating inside the sram_inst macro boundary
-add_pdn_obstruction \
-    -grid stdcell_grid \
-    -layers {Metal1 Metal2} \
-    -rectangles {0.0 0.0 347.0 325.0}
