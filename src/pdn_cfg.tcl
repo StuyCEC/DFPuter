@@ -172,15 +172,23 @@ if { $::env(PDN_CORE_RING) == 1 } {
     }
 }
 
+# Define macro grid and add valid connection rules using add_pdn_connect
+define_pdn_grid \
+    -macro \
+    -default \
+    -name macro \
+    -starts_with POWER \
+    -halo "$::env(PDN_HORIZONTAL_HALO) $::env(PDN_VERTICAL_HALO)"
+
+add_pdn_connect \
+    -grid macro \
+    -layers "Metal3 Metal4"
+
 define_pdn_grid \
     -macro \
     -instances "sram_inst" \
     -name sram_grid \
-    -starts_with POWER \
-    -connect {
-        {power VPWR VDD}
-        {ground VGND VSS}
-    }
+    -starts_with POWER
 
 add_pdn_connect \
     -grid sram_grid \
