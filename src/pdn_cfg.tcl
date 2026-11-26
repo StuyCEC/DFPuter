@@ -38,7 +38,7 @@ if { $::env(PDN_MULTILAYER) == 1 } {
     set arg_list [list]
 
     if { $::env(PDN_ENABLE_PINS) } {
-        lappend arg_list -pins "Metal4"
+        lappend arg_list -pins "$::env(PDN_VERTICAL_LAYER) $::env(PDN_HORIZONTAL_LAYER)"
     }
 
     define_pdn_grid \
@@ -81,7 +81,7 @@ if { $::env(PDN_MULTILAYER) == 1 } {
     set arg_list [list]
 
     if { $::env(PDN_ENABLE_PINS) } {
-        lappend arg_list -pins "Metal4"
+        lappend arg_list -pins "$::env(PDN_VERTICAL_LAYER)"
     }
 
     define_pdn_grid \
@@ -116,7 +116,7 @@ if { $::env(PDN_ENABLE_RAILS) == 1 } {
 
     add_pdn_connect \
         -grid stdcell_grid \
-        -layers "$::env(PDN_RAIL_LAYER) $::env(PDN_VERTICAL_Layer)"
+        -layers "$::env(PDN_RAIL_LAYER) $::env(PDN_VERTICAL_LAYER)"
 }
 
 if { $::env(PDN_CORE_RING) == 1 } {
@@ -181,3 +181,7 @@ define_pdn_grid \
         {power VPWR VDD}
         {ground VGND VSS}
     }
+
+add_pdn_connect \
+    -grid sram_grid \
+    -layers "Metal3 Metal4"
