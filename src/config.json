@@ -14,6 +14,12 @@
     400.0,
     400.0
   ],
+  "FP_CORE_AREA": [
+    5.0,
+    5.0,
+    395.0,
+    395.0
+  ],
   "PL_TARGET_DENSITY_PCT": 10,
   "PL_ROUTABILITY_DRIVEN": true,
   "FP_MACRO_HORIZONTAL_HALO": 5.0,
@@ -48,8 +54,8 @@
       "instances": {
         "sram_inst": {
           "location": [
-            0.0,
-            0.0
+            5.0,
+            5.0
           ],
           "orientation": "N"
         }
