@@ -1,13 +1,12 @@
 source $::env(SCRIPTS_DIR)/openroad/common/io.tcl
+
+# Explicitly map SRAM macro power pins to core power nets before default setup
+add_global_connection -net $::env(VDD_NET) -inst_pattern sram_inst -pin_pattern VDD -power
+add_global_connection -net $::env(GND_NET) -inst_pattern sram_inst -pin_pattern VSS -ground
+
 source $::env(SCRIPTS_DIR)/openroad/common/set_global_connections.tcl
 
 set_global_connections
-
-# Explicit global connections for sram_inst using OpenROAD pattern syntax
-add_global_connection -net $::env(VDD_NET) -inst_pattern sram_inst -pin_pattern VDD
-add_global_connection -net $::env(GND_NET) -inst_pattern sram_inst -pin_pattern VSS
-add_global_connection -net $::env(VDD_NET) -inst_pattern sram_inst -pin_pattern VPWR
-add_global_connection -net $::env(GND_NET) -inst_pattern sram_inst -pin_pattern VGND
 
 set secondary []
 
@@ -178,6 +177,7 @@ if { $::env(PDN_CORE_RING) == 1 } {
     }
 }
 
+# Dedicated grid for sram_inst
 define_pdn_grid \
     -macro \
     -instances "sram_inst" \
