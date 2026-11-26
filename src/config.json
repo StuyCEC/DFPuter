@@ -18,7 +18,9 @@
   "PL_ROUTABILITY_DRIVEN": true,
   "FP_TAP_HORIZONTAL_HALO": 30.0,
   "FP_TAP_VERTICAL_HALO": 30.0,
-  "PDN_MULTILAYER": false,
+  "PDN_MULTILAYER": true,
+  "PDN_VERTICAL_LAYER": "Metal3",
+  "PDN_HORIZONTAL_LAYER": "Metal4",
   "PDN_EXTEND_TO": "boundary",
   "PDN_CFG": "dir::pdn_cfg.tcl",
   "MACROS": {
