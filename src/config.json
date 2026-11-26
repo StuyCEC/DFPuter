@@ -11,18 +11,21 @@
   "DIE_AREA": [
     0,
     0,
-    500.0,
-    500.0
+    400.0,
+    400.0
   ],
   "PL_TARGET_DENSITY_PCT": 10,
   "PL_ROUTABILITY_DRIVEN": true,
-  "FP_TAP_HORIZONTAL_HALO": 15.0,
-  "FP_TAP_VERTICAL_HALO": 15.0,
+  "FP_TAP_HORIZONTAL_HALO": 10.0,
+  "FP_TAP_VERTICAL_HALO": 10.0,
   "PDN_MULTILAYER": true,
   "PDN_VERTICAL_LAYER": "Metal3",
   "PDN_HORIZONTAL_LAYER": "Metal4",
   "PDN_EXTEND_TO": "boundary",
   "PDN_CFG": "dir::pdn_cfg.tcl",
+  "PDN_OBSTRUCTIONS": [
+    "sram_inst Metal1,Metal2,Metal3,Metal4"
+  ],
   "MACROS": {
     "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
       "gds": [
