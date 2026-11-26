@@ -4,14 +4,12 @@ source $::env(SCRIPTS_DIR)/openroad/common/set_global_connections.tcl
 
 set_global_connections
 
-
 set pdn_rail_layer       "Metal1"
-set pdn_vertical_layer   "Metal3"
-set pdn_horizontal_layer "Metal4"
+set pdn_vertical_layer   "Metal4"
+set pdn_horizontal_layer "Metal3"
 
-set pdn_core_vertical_layer   "Metal3"
-set pdn_core_horizontal_layer "Metal4"
-
+set pdn_core_vertical_layer   "Metal4"
+set pdn_core_horizontal_layer "Metal3"
 
 set allowed_pdn_layers {
     Metal1
@@ -35,11 +33,8 @@ foreach layer [list \
 set secondary []
 
 foreach vdd $::env(VDD_NETS) gnd $::env(GND_NETS) {
-
     if {$vdd != $::env(VDD_NET)} {
-
         lappend secondary $vdd
-
         set db_net [[ord::get_db_block] findNet $vdd]
 
         if {$db_net == "NULL"} {
@@ -50,9 +45,7 @@ foreach vdd $::env(VDD_NETS) gnd $::env(GND_NETS) {
     }
 
     if {$gnd != $::env(GND_NET)} {
-
         lappend secondary $gnd
-
         set db_net [[ord::get_db_block] findNet $gnd]
 
         if {$db_net == "NULL"} {
@@ -69,15 +62,11 @@ set_voltage_domain \
     -ground $::env(GND_NET) \
     -secondary_power $secondary
 
-
-
 if {$::env(PDN_MULTILAYER) == 1} {
-
     set arg_list [list]
 
     if {$::env(PDN_ENABLE_PINS)} {
-        lappend arg_list -pins \
-            "$pdn_vertical_layer $pdn_horizontal_layer"
+        lappend arg_list -pins "$pdn_vertical_layer $pdn_horizontal_layer"
     }
 
     define_pdn_grid \
@@ -94,8 +83,6 @@ if {$::env(PDN_MULTILAYER) == 1} {
     append_if_equals arg_list PDN_EXTEND_TO \
         "boundary" -extend_to_boundary
 
-    # Vertical stripes: Metal3
-
     add_pdn_stripe \
         -grid stdcell_grid \
         -layer $pdn_vertical_layer \
@@ -106,8 +93,6 @@ if {$::env(PDN_MULTILAYER) == 1} {
         -starts_with POWER \
         {*}$arg_list
 
-    # Horizontal stripes: Metal4
-
     add_pdn_stripe \
         -grid stdcell_grid \
         -layer $pdn_horizontal_layer \
@@ -117,8 +102,6 @@ if {$::env(PDN_MULTILAYER) == 1} {
         -spacing $::env(PDN_HSPACING) \
         -starts_with POWER \
         {*}$arg_list
-
-    # Connect adjacent layers.
 
     add_pdn_connect \
         -grid stdcell_grid \
@@ -131,9 +114,7 @@ if {$::env(PDN_MULTILAYER) == 1} {
     add_pdn_connect \
         -grid stdcell_grid \
         -layers "Metal3 Metal4"
-
 } else {
-
     set arg_list [list]
 
     if {$::env(PDN_ENABLE_PINS)} {
@@ -165,10 +146,7 @@ if {$::env(PDN_MULTILAYER) == 1} {
         {*}$arg_list
 }
 
-
-
 if {$::env(PDN_ENABLE_RAILS) == 1} {
-
     add_pdn_stripe \
         -grid stdcell_grid \
         -layer $pdn_rail_layer \
@@ -178,12 +156,9 @@ if {$::env(PDN_ENABLE_RAILS) == 1} {
     add_pdn_connect \
         -grid stdcell_grid \
         -layers "Metal1 Metal2"
-
 }
 
-
 if {$::env(PDN_CORE_RING) == 1} {
-
     if {$::env(PDN_MULTILAYER) != 1} {
         error "PDN_CORE_RING requires PDN_MULTILAYER"
     }
@@ -214,15 +189,12 @@ if {$::env(PDN_CORE_RING) == 1} {
         -layers "Metal3 Metal4"
 }
 
-
 define_pdn_grid \
     -macro \
     -default \
     -name macro \
     -starts_with POWER \
     -halo "$::env(PDN_HORIZONTAL_HALO) $::env(PDN_VERTICAL_HALO)"
-
-# Connect macro power geometry through the permitted layers.
 
 add_pdn_connect \
     -grid macro \
@@ -236,15 +208,11 @@ add_pdn_connect \
     -grid macro \
     -layers "Metal3 Metal4"
 
-
 define_pdn_grid \
     -macro \
     -instances "sram_inst" \
     -name sram_grid \
     -starts_with POWER
-
-# SRAM VDD: Metal2 and Metal3
-# SRAM VSS: Metal1, Metal2 and Metal3
 
 add_pdn_connect \
     -grid sram_grid \

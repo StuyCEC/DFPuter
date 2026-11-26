@@ -1,3 +1,4 @@
+
 {
   "DESIGN_NAME": "tt_um_dfputer",
 
@@ -19,6 +20,7 @@
   "FP_TAP_HORIZONTAL_HALO": 30.0,
   "FP_TAP_VERTICAL_HALO": 30.0,
 
+  "PDN_CFG": "dir::src/pdn_cfg.tcl",
   "PDN_MULTILAYER": true,
 
   "PDN_RAIL_LAYER": "Metal1",
@@ -45,16 +47,16 @@
         "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__blackbox.v"
       ],
       "lib": {
-  "*_tt_025C_3v30": [
-    "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__tt_025C_3v30.lib"
-  ],
-  "*_ss_125C_3v00": [
-    "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__ss_125C_3v00.lib"
-  ],
-  "*_ff_n40C_3v60": [
-    "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__ff_n40C_3v60.lib"
-  ]
-},
+        "*_tt_025C_3v30": [
+          "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__tt_025C_3v30.lib"
+        ],
+        "*_ss_125C_3v00": [
+          "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__ss_125C_3v00.lib"
+        ],
+        "*_ff_n40C_3v60": [
+          "dir::sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1__ff_n40C_3v60.lib"
+        ]
+      },
       "instances": {
         "sram_inst": {
           "location": [30, 30],
