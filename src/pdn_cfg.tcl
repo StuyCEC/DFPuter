@@ -3,6 +3,12 @@ source $::env(SCRIPTS_DIR)/openroad/common/set_global_connections.tcl
 
 set_global_connections
 
+# Force global connections for the SRAM macro to bypass ODB-0403 conflicts
+add_global_connection -net $::env(VDD_NET) -pin VDD -inst sram_inst -force
+add_global_connection -net $::env(GND_NET) -pin VSS -inst sram_inst -force
+add_global_connection -net $::env(VDD_NET) -pin VPWR -inst sram_inst -force
+add_global_connection -net $::env(GND_NET) -pin VGND -inst sram_inst -force
+
 set secondary []
 
 foreach vdd $::env(VDD_NETS) gnd $::env(GND_NETS) {
@@ -164,7 +170,7 @@ if { $::env(PDN_CORE_RING) == 1 } {
 
     if {
         [info exists ::env(PDN_CORE_VERTICAL_LAYER)] &&
-        [info exists ::env(PDN_CORE_HORIZONTAL_Layer)]
+        [info exists ::env(PDN_CORE_HORIZONTAL_LAYER)]
     } {
         add_pdn_connect \
             -grid stdcell_grid \
@@ -172,6 +178,7 @@ if { $::env(PDN_CORE_RING) == 1 } {
     }
 }
 
+# Dedicated grid for sram_inst
 define_pdn_grid \
     -macro \
     -instances "sram_inst" \
