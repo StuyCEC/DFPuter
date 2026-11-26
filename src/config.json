@@ -57,7 +57,7 @@
     }
   },
   "PDN_MACRO_CONNECTIONS": [
-    "sram_inst VPWR VDD VGND VSS"
+    "sram_inst VDD VPWR VSS VGND"
   ],
   "RT_MAX_LAYER": "Metal4"
 }
