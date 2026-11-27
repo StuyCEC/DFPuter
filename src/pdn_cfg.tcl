@@ -198,32 +198,18 @@ define_pdn_grid \
     -starts_with POWER \
     -halo "$::env(PDN_HORIZONTAL_HALO) $::env(PDN_VERTICAL_HALO)"
 
-add_pdn_connect \
-    -grid macro \
-    -layers "Metal1 Metal2"
-
-add_pdn_connect \
-    -grid macro \
-    -layers "Metal2 Metal3"
-
-add_pdn_connect \
-    -grid macro \
-    -layers "Metal3 Metal4"
-
 define_pdn_grid \
     -macro \
     -instances "sram_inst" \
     -name sram_grid \
     -starts_with POWER
 
-add_pdn_connect \
-    -grid sram_grid \
-    -layers "Metal1 Metal2"
+foreach dir {hor ver} {
+    add_pdn_connect -grid macro -layers "Metal1_PIN_${dir} Metal2"
+    add_pdn_connect -grid macro -layers "Metal2_PIN_${dir} Metal3"
+    add_pdn_connect -grid macro -layers "Metal3_PIN_${dir} Metal4"
 
-add_pdn_connect \
-    -grid sram_grid \
-    -layers "Metal2 Metal3"
-
-add_pdn_connect \
-    -grid sram_grid \
-    -layers "Metal3 Metal4"
+    add_pdn_connect -grid sram_grid -layers "Metal1_PIN_${dir} Metal2"
+    add_pdn_connect -grid sram_grid -layers "Metal2_PIN_${dir} Metal3"
+    add_pdn_connect -grid sram_grid -layers "Metal3_PIN_${dir} Metal4"
+}
