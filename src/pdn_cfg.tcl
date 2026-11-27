@@ -116,6 +116,10 @@ if { $::env(PDN_ENABLE_RAILS) == 1 } {
 
     add_pdn_connect \
         -grid stdcell_grid \
+        -layers "$::env(PDN_RAIL_LAYER) $::env(PDN_HORIZONTAL_LAYER)"
+
+    add_pdn_connect \
+        -grid stdcell_grid \
         -layers "$::env(PDN_RAIL_LAYER) $::env(PDN_VERTICAL_LAYER)"
 }
 

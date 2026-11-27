@@ -54,6 +54,6 @@
     }
   },
   "PDN_MACRO_CONNECTIONS": [
-    "sram_inst VDD VPWR VSS VGND"
-  ]
+    "sram_inst VPWR VGND VDD VSS"
+]
 }
