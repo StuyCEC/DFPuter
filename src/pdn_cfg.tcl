@@ -199,4 +199,8 @@ add_pdn_ring \
 
 add_pdn_connect \
     -grid sram_grid \
+    -layers "Metal2 Metal3"
+
+add_pdn_connect \
+    -grid sram_grid \
     -layers "Metal3 Metal4"
