@@ -5,6 +5,12 @@
     "dir::src/dfcu.v",
     "dir::src/tt_um_dfputer.v"
   ],
+  "PDN_RAIL_LAYER": "Metal1",
+  "PDN_VERTICAL_LAYER": "Metal4",
+  "PDN_HORIZONTAL_LAYER": "Metal3",
+  "PDN_CORE_VERTICAL_LAYER": "Metal4",
+  "PDN_CORE_HORIZONTAL_LAYER": "Metal3",
+  "RT_MAX_LAYER": "Metal4",
   "CLOCK_PORT": "clk",
   "CLOCK_PERIOD": 50.0,
   "FP_SIZING": "absolute",
