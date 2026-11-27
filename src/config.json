@@ -1,4 +1,3 @@
-
 {
   "DESIGN_NAME": "tt_um_dfputer",
   "VERILOG_FILES": [
@@ -21,12 +20,6 @@
   "FP_TAP_VERTICAL_HALO": 30.0,
   "PDN_MULTILAYER": true,
   "PDN_CFG": "dir::pdn_cfg.tcl",
-  "PDN_RAIL_LAYER": "Metal1",
-  "PDN_VERTICAL_LAYER": "Metal4",
-  "PDN_HORIZONTAL_LAYER": "Metal3",
-  "PDN_CORE_VERTICAL_LAYER": "Metal4",
-  "PDN_CORE_HORIZONTAL_LAYER": "Metal3",
-  "RT_MAX_LAYER": "Metal4",
   "MACROS": {
     "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
       "gds": [
