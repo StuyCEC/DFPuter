@@ -153,9 +153,11 @@ if {$::env(PDN_ENABLE_RAILS) == 1} {
         -width $::env(PDN_RAIL_WIDTH) \
         -followpins
 
-    add_pdn_connect \
-        -grid stdcell_grid \
-        -layers "Metal1 Metal2"
+    if {$::env(PDN_MULTILAYER) != 1} {
+        add_pdn_connect \
+            -grid stdcell_grid \
+            -layers "Metal1 Metal2"
+    }
 }
 
 if {$::env(PDN_CORE_RING) == 1} {
