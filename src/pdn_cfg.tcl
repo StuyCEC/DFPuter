@@ -214,7 +214,10 @@ define_pdn_grid \
     -macro \
     -instances "sram_inst" \
     -name sram_grid \
-    -starts_with POWER
+    -starts_with POWER \
+    -grid_over_pg_pins
+
+add_pdn_connect -grid sram_grid -layers "Metal3_PIN_hor Metal4"
 
 add_pdn_connect \
     -grid sram_grid \
