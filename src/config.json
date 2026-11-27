@@ -1,40 +1,32 @@
 
 {
   "DESIGN_NAME": "tt_um_dfputer",
-
   "VERILOG_FILES": [
     "dir::src/defines.vh",
     "dir::src/dfcu.v",
     "dir::src/tt_um_dfputer.v"
   ],
-
   "CLOCK_PORT": "clk",
   "CLOCK_PERIOD": 50.0,
-
   "FP_SIZING": "absolute",
-  "DIE_AREA": [0, 0, 400.0, 400.0],
-
+  "DIE_AREA": [
+    0,
+    0,
+    400.0,
+    400.0
+  ],
   "PL_TARGET_DENSITY_PCT": 20,
   "PL_ROUTABILITY_DRIVEN": true,
-
   "FP_TAP_HORIZONTAL_HALO": 30.0,
   "FP_TAP_VERTICAL_HALO": 30.0,
-
-  "PDN_CFG": "dir::pdn_cfg.tcl",
   "PDN_MULTILAYER": true,
-
+  "PDN_CFG": "dir::pdn_cfg.tcl",
   "PDN_RAIL_LAYER": "Metal1",
   "PDN_VERTICAL_LAYER": "Metal4",
   "PDN_HORIZONTAL_LAYER": "Metal3",
-
   "PDN_CORE_VERTICAL_LAYER": "Metal4",
   "PDN_CORE_HORIZONTAL_LAYER": "Metal3",
-
-  "PDN_ENABLE_PINS": true,
-  "PDN_CONNECT_MACROS_TO_GRID": true,
-
   "RT_MAX_LAYER": "Metal4",
-
   "MACROS": {
     "gf180mcu_ocd_ip_sram__sram256x8m8wm1": {
       "gds": [
@@ -59,14 +51,16 @@
       },
       "instances": {
         "sram_inst": {
-          "location": [30, 30],
+          "location": [
+            30.0,
+            30.0
+          ],
           "orientation": "N"
         }
       }
     }
   },
-
   "PDN_MACRO_CONNECTIONS": [
-    "sram_inst VPWR VGND VDD VSS"
+    "sram_inst VDD VPWR VSS VGND"
   ]
 }
