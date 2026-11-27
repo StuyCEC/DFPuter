@@ -1,3 +1,4 @@
+```yaml
 name: gds
 
 on:
@@ -17,6 +18,40 @@ jobs:
         uses: TinyTapeout/tt-gds-action@ttgf26c
         with:
           pdk: gf180mcuD
+
+      - name: Inspect GF180 power pin LEFs
+        if: always()
+        shell: bash
+        run: |
+          PDK="/home/runner/.ciel/ciel/gf180mcu/versions/54435919abffb937387ec956209f9cf5fd2dfbee/gf180mcuD"
+
+          STD_LEF="$PDK/libs.ref/gf180mcu_fd_sc_mcu7t5v0/lef/gf180mcu_fd_sc_mcu7t5v0.lef"
+          SRAM_LEF="src/sram/cells/gf180mcu_ocd_ip_sram__sram256x8m8wm1/gf180mcu_ocd_ip_sram__sram256x8m8wm1.lef"
+
+          echo "=== STANDARD CELL LEF ==="
+          if [ -f "$STD_LEF" ]; then
+            grep -n -A20 -E '^[[:space:]]*PIN (VPWR|VGND)$' "$STD_LEF" | head -160
+          else
+            echo "Standard-cell LEF not found: $STD_LEF"
+          fi
+
+          echo "=== SRAM LEF POWER PINS ==="
+          if [ -f "$SRAM_LEF" ]; then
+            grep -n -A25 -E '^[[:space:]]*PIN (VPWR|VGND|VDD|VSS)$' "$SRAM_LEF"
+          else
+            echo "SRAM LEF not found: $SRAM_LEF"
+          fi
+
+      - name: Upload GDS and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: GDS_logs
+          path: |
+            runs/
+            *.gds
+            *.lef
+          if-no-files-found: ignore
 
   precheck:
     needs: gds
@@ -42,7 +77,8 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
+      pages: write
+      id-token: write
     steps:
       - uses: TinyTapeout/tt-gds-action/viewer@ttgf26c
+```
