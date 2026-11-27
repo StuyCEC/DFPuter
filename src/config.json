@@ -5,6 +5,7 @@
     "dir::src/dfcu.v",
     "dir::src/tt_um_dfputer.v"
   ],
+  "PDN_EXTEND_TO": "boundary",
   "PDN_RAIL_LAYER": "Metal1",
   "PDN_VERTICAL_LAYER": "Metal4",
   "PDN_HORIZONTAL_LAYER": "Metal3",
