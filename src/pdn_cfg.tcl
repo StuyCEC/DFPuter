@@ -184,7 +184,7 @@ add_pdn_ring \
     -layers {Metal4 Metal3} \
     -widths {2.0 2.0} \
     -spacings {2.0 2.0} \
-    -core_offsets {0.0 0.0 0.0 0.0}
+    -core_offsets {-2.0 -2.0 -2.0 -2.0}
 
 add_pdn_connect \
     -grid sram_grid \
