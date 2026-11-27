@@ -187,7 +187,15 @@ define_pdn_grid \
     -macro \
     -instances "sram_inst" \
     -name sram_grid \
-    -starts_with POWER
+    -starts_with POWER \
+    -grid_over_boundary
+
+add_pdn_ring \
+    -grid sram_grid \
+    -layers {Metal4 Metal3} \
+    -widths {2.0 2.0} \
+    -spacings {2.0 2.0} \
+    -core_offsets {5.0 5.0 5.0 5.0}
 
 add_pdn_connect \
     -grid sram_grid \
