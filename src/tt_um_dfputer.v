@@ -225,9 +225,9 @@ always @(posedge clk) begin
 
                         `EXT_GWRITE: begin
                             case (opt2)
-                                4'h1: gpio_uio_out <= regfile[regdest[2:0]];
-                                4'h2: gpio_out <= regfile[regdest[2:0]];
-                                4'h3: gpio_uio_oe <= regfile[regdest[2:0]];
+                                4'h1: gpio_uio_out <= (reg_wdata && (regdest[2:0] == opt2)) ? cu_datout : regfile[regdest[2:0]];
+                                4'h2: gpio_out     <= (reg_wdata && (regdest[2:0] == opt2)) ? cu_datout : regfile[regdest[2:0]];
+                                4'h3: gpio_uio_oe  <= (reg_wdata && (regdest[2:0] == opt2)) ? cu_datout : regfile[regdest[2:0]];
                             endcase
                         end
                     endcase
