@@ -25,8 +25,10 @@ async def test_reset_state(dut):
     clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
 
+    ## Apply reset sequence
     await reset_dut(dut)
 
+    ## Verify output is zero after reset
     assert int(dut.uo_out.value) == 0, f"Expected uo_out to be 0 after reset, got {dut.uo_out.value}"
     dut._log.info("Reset state verified successfully.")
 
@@ -39,6 +41,7 @@ async def test_immediate_load_and_add(dut):
     clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
 
+    ## Reset the device under test
     await reset_dut(dut)
 
     ## Load value of 10 into register 0
@@ -59,7 +62,7 @@ async def test_immediate_load_and_add(dut):
     dut.uio_in.value = 0x01
     await ClockCycles(dut.clk, 2)
 
-    ## Insert a NOP (Opcode 0) to allow register file write to fully latch
+    ## Insert a NOP to allow register file write to fully latch
     dut.ui_in.value = 0x00
     dut.uio_in.value = 0x00
     await ClockCycles(dut.clk, 2)
