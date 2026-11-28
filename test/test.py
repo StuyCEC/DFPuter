@@ -59,6 +59,11 @@ async def test_immediate_load_and_add(dut):
     dut.uio_in.value = 0x01
     await ClockCycles(dut.clk, 2)
 
+    ## Insert a NOP (Opcode 0) to allow register file write to fully latch
+    dut.ui_in.value = 0x00
+    dut.uio_in.value = 0x00
+    await ClockCycles(dut.clk, 2)
+
     ## Use EXT_GWRITE to send R2 to uo_out (gpio_out)
     ## EXT 4'hF R2
     dut.ui_in.value = 0xF2
